@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/bookinghotel/bookinghotel.iml" filepath="$PROJECT_DIR$/bookinghotel/bookinghotel.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/bookinghotel_thymeleaf.iml" filepath="$PROJECT_DIR$/.idea/bookinghotel_thymeleaf.iml" />
     </modules>
   </component>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create room</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto rounded border p-4 m-4">
+            <h3 class="text-center mb-5">New Room</h3>
+
+            <form method="post" enctype="multipart/form-data" th:object="${roomDTO}">
+                <div class="row mb-3">
+                    <label for="CTGNameRow" class="col-sm-2 col-form-label">Room Name:</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="CTGNameRow" class="form-control" th:field="*{CTGName}" placeholder="Input new room">
+                        <p class="text-danger" th:if="${#fields.hasErrors('CTGName')}" th:errors="*{CTGName}">Room name is required</p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="CTGStarRow" class="col-sm-2 form-label">Room Star:</label>
+                    <div class="col-sm-2">
+                        <input type="text" id="CTGStarRow" class="form-control" th:field="*{CTGStar}" placeholder="Star">
+                        <p class="text-danger" th:if="${#fields.hasErrors('CTGStar')}" th:errors="*{CTGStar}">Room star rating is required</p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="CTGQuantityRow" class="col-sm-2 form-label">Number of room:</label>
+                    <div class="col-sm-2">
+                        <input type="text" id="CTGQuantityRow" class="form-control" th:field="*{CTGQuantity}" placeholder="Quantity">
+                        <p class="text-danger" th:if="${#fields.hasErrors('CTGQuantity')}" th:errors="*{CTGQuantity}">Number of room cannot empty</p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="CTGImgRow" class="col-sm-2 form-label">Upload image</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="file" id="CTGImgRow" th:field="*{CTGImg}">
+                        <p class="text-danger" th:if="${#fields.hasErrors('CTGImg')}" th:errors="*{CTGImg}">Room image is required</p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="CTGHIDRow" class="col-sm-2 form-label">Hotel:</label>
+                    <div class="col-sm-4">
+                        <select id="CTGHIDRow" class="form-control" th:field="*{HID}">
+                            <option value="" disabled selected>Select a hotel</option>
+                            <option th:each="hotel : ${hotels}" th:value="${hotel.HID}" th:text="${hotel.HName}"></option>
+                        </select>
+                        <p class="text-danger" th:if="${#fields.hasErrors('HID')}" th:errors="*{HID}">Hotel is required</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-sm-2 col-sm-2 d-grid">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                    <div class="col-sm-2 d-grid">
+                        <a class="btn btn-outline-danger" href="/rooms/" role="button">Cancel</a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
