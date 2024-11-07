@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -19,8 +17,7 @@ public class UsersApiController {
     @Autowired
     private UsersService usersService;
 
-    // API endpoint to retrieve all users
-    @GetMapping("") // Returns all users in JSON format
+    @GetMapping("")
     public List<Users> getAllUsers() {
         return usersService.getAllUsers();
     }

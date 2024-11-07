@@ -29,12 +29,10 @@ public class UsersService {
 
         Boolean success = true;
 
-        //Check Email exist
         Users existingUser = usersRepository.findByUEmail(email);
         if (existingUser != null) {
             success = false;
         }
-        // Insert user
         Users newUser = new Users();
         newUser.setUEmail(email);
         newUser.setUPassword(password);
@@ -51,13 +49,16 @@ public class UsersService {
         return success;
     }
 
-    public void loginUser(String email, String password) {
+    public String loginUser(String email, String password) {
         Users checkLogin = usersRepository.findByUEmailAndUPassword(email, password);
         if (checkLogin != null) {
-            System.out.println(checkLogin.getUEmail());
-            System.out.println(checkLogin.getUPassword());
+            System.out.println("Email: " + checkLogin.getUEmail());
+            System.out.println("Password: " + checkLogin.getUPassword());
+            System.out.println("Role: " + checkLogin.getURole());
+            return checkLogin.getURole();
         } else {
             System.out.println("No user found");
+            return null;
         }
     }
 }

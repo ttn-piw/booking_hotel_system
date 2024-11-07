@@ -31,7 +31,7 @@ public class RoomsController {
     @Autowired
     private HotelsService hotelsService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String showRoomsList(Model model){
         model.addAttribute("rooms", roomsService.getAllRooms());
         return "rooms/roomList.html";
@@ -78,7 +78,7 @@ public class RoomsController {
         }
 
         roomsService.createNewRoom(roomDTO, storeImg);
-        return "redirect:/rooms/";
+        return "redirect:/rooms";
     }
 
     @GetMapping("/edit")
@@ -103,7 +103,7 @@ public class RoomsController {
 
         } catch (Exception e) {
             System.out.println("Error editing room: " + e.getMessage());
-            return "redirect:/rooms/";
+            return "redirect:/rooms";
         }
         return "rooms/editRoomById.html";
     }
@@ -148,7 +148,7 @@ public class RoomsController {
         }
         roomsService.updateRoom(editedRoom, id);
 
-        return "redirect:/rooms/";
+        return "redirect:/rooms";
     }
 
     @GetMapping("/delete")
@@ -168,7 +168,7 @@ public class RoomsController {
         }
         roomsService.deleteRoom(deleteRoom.getCTGID());
 
-        return "redirect:/rooms/";
+        return "redirect:/rooms";
     }
 
 }

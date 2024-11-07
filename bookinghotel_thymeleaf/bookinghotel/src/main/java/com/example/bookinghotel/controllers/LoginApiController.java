@@ -14,10 +14,16 @@ public class LoginApiController {
     UsersService usersService;
 
     @PostMapping("users/login")
-    public ResponseEntity loginUser(@RequestParam("param_email")String email,
-                                    @RequestParam("param_password")String password) {
-        usersService.loginUser(email, password);
+    public ResponseEntity<String> loginUser(@RequestParam("param_email") String email,
+                                            @RequestParam("param_password") String password) {
+        String role = usersService.loginUser(email, password);
 
-        return new ResponseEntity<>("User Register Sucessfully!", HttpStatus.OK);
+        if (role == null) {
+            return new ResponseEntity<>("Invalid login", HttpStatus.UNAUTHORIZED);
+        } else if (role.equals("admin")) {
+            return new ResponseEntity<>("Go to admin page", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Redirect user page", HttpStatus.OK);
+        }
     }
 }

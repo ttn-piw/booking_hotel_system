@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign Up Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        .container {
+            align-items: center;
+        }
+
+        .user-icon {
+            text-align: center;
+            font-size: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="container mt-5 pt-5">
+            <div class="row">
+                <div class="col-12 col-sm-8 col-md-4 mx-auto">
+                    <div class="card border-0 shadow">
+                        <div class="card-body">
+                            <div class="user-icon text-center">
+                                <i class="fa-solid fa-circle-user"></i>
+                            </div>
+                            <form id="signupForm">
+                                <input type="text" name="fullname" id="fullname" class="form-control my-4 py-2"
+                                    placeholder="Full Name" required />
+                                <div class="my-4">
+                                    <label>Sex</label><br>
+                                    <input type="radio" name="sex" id="male" value="true" checked> Male
+                                    <input type="radio" name="sex" id="female" value="false"> Female
+                                </div>
+                                <input type="text" name="address" id="address" class="form-control my-4 py-2"
+                                    placeholder="Address" required />
+                                <input type="email" name="email" id="email" class="form-control my-4 py-2"
+                                    placeholder="Email" required />
+                                <input type="password" name="password" id="password" class="form-control my-4 py-2"
+                                    placeholder="Password" required />
+                                <input type="password" name="rePassword" id="rePassword" class="form-control my-4 py-2"
+                                    placeholder="Re-enter Password" required />
+                                <div class="text-center mt-3">
+                                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                                    <a href="index.html" class="nav-link">Already have an account? Login</a>
+                                </div>
+                            </form>
+                            <div id="responseMessage" class="mt-3 text-center"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const fullname = document.getElementById("fullname").value;
+            const sex = document.querySelector('input[name="sex"]:checked').value;
+            const address = document.getElementById("address").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const rePassword = document.getElementById("rePassword").value;
+            const role = "user";
+
+            if (password !== rePassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            const data = new URLSearchParams();
+            data.append("param_name", fullname);
+            data.append("param_sex", sex);
+            data.append("param_address", address);
+            data.append("param_email", email);
+            data.append("param_password", password);
+            data.append("param_role",role)
+
+            const response = await fetch('api/v1/users/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: data
+            });
+
+            const message = await response.text();
+            if (response.ok) {
+                alert("Registration successful!");
+                window.location.href = 'index.html';
+            } else {
+                alert("Error: " + message);
+            }
+        });
+    </script>
+</body>
+
+</html>

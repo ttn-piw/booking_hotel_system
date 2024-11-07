@@ -16,7 +16,7 @@ public class PersonsController {
     @Autowired
     private PersonsService personsService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String showPersons(Model model) {
         model.addAttribute("persons", personsService.getAllPersons());
         return "persons/managePersons.html";
@@ -25,6 +25,6 @@ public class PersonsController {
     @GetMapping("/delete")
     public String deletePersonByID(@RequestParam int id){
         personsService.deletePerson(id);
-        return "redirect:/persons/";
+        return "redirect:/persons";
     }
 }

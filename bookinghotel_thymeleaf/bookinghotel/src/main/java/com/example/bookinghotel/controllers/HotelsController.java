@@ -4,6 +4,7 @@ import com.example.bookinghotel.models.hotel;
 import com.example.bookinghotel.models.hotelDTO;
 import com.example.bookinghotel.repository.HotelRepository;
 import com.example.bookinghotel.services.HotelsService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ public class HotelsController {
     @Autowired
     private HotelsService hotelsService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String showHotelList(Model model){
         model.addAttribute("hotels", hotelsService.getAllHotels());
         return "hotels/index.html";
@@ -70,7 +71,7 @@ public class HotelsController {
         }
 
         hotelsService.createNewHotel(hotelDTO, storeImg);
-        return "redirect:/hotels/";
+        return "redirect:/hotels";
     }
 
     @GetMapping("/edit")
@@ -92,7 +93,7 @@ public class HotelsController {
 
         } catch (Exception e) {
             System.out.println("Error editing hotel: " + e.getMessage());
-            return "redirect:/hotels/";
+            return "redirect:/hotels";
         }
         return "hotels/editHotelById.html";
     }
@@ -138,7 +139,7 @@ public class HotelsController {
         }
         hotelsService.updateHotel(editedHotel);
 
-        return "redirect:/hotels/";
+        return "redirect:/hotels";
     }
 
     @GetMapping("/delete")
@@ -158,7 +159,7 @@ public class HotelsController {
         }
         hotelsService.deleteHotel(deleteHotel.getHID());
 
-        return "redirect:/hotels/";
+        return "redirect:/hotels";
     }
 
 }

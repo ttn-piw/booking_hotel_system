@@ -15,7 +15,7 @@ public class BookingsController {
     @Autowired
     private BookingsService bookingsService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String bookings(Model model) {
         model.addAttribute("bookings", bookingsService.getAllBookings());
         return "bookings/bookingsList.html";
