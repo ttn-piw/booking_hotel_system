@@ -2,6 +2,7 @@ package com.example.booking_listview
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,12 @@ class Mainpage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_page)
+
+        val sharedPreferences = getSharedPreferences("emailSession", MODE_PRIVATE)
+        val emailSession = sharedPreferences.getString("session_email","No email found")
+
+        val textSessionEmail = findViewById<TextView>(R.id.edtSessionEmail)
+        textSessionEmail.text = "Welcome, $emailSession! Where do you want to go?"
 
         rvHotelList = findViewById(R.id.rvHotelList)
         rvHotelList.layoutManager = LinearLayoutManager(

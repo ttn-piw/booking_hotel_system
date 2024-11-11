@@ -16,6 +16,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.Volley
 import com.android.volley.toolbox.StringRequest
 import com.example.booking_listview.R.id.txtLinksignup
+import org.json.JSONException
+import org.json.JSONObject
 
 class Login : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -43,9 +45,18 @@ class Login : AppCompatActivity() {
                     Response.Listener<String> { response ->
                         println("Response is: $response")
                         Toast.makeText(this, "Login Successfully!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, Mainpage::class.java)
-                        startActivity(intent);
-                        finish()
+
+                            val edtLoginEmail = findViewById<EditText>(R.id.edtLoginEmail)
+                            val emailSession = edtLoginEmail.text.toString()
+
+                            val sharedPreferences = getSharedPreferences("emailSession", MODE_PRIVATE);
+                            val editor = sharedPreferences.edit();
+                            editor.putString("session_email", emailSession);
+                            editor.apply()
+
+                            val intent = Intent(this, Mainpage::class.java)
+                            startActivity(intent);
+                            finish()
                     },
                     Response.ErrorListener { error ->
                         error.printStackTrace()

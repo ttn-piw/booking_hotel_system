@@ -33,6 +33,21 @@ public class RoomsService {
         return roomRepository.findById(roomID).get();
     }
 
+    @Transactional
+    public List<room> getBestRooms(){
+        String getBestListRooms = "SELECT r FROM room r ORDER BY r.CTGStar DESC";
+        List<room> resultList = entityManager.createQuery(getBestListRooms, room.class)
+                .setMaxResults(10)
+                .getResultList();
+        return resultList;
+    }
+
+    @Transactional
+    public List<room> getRoomsByHID(Integer hotelID) {
+        String getRooms = "SELECT r FROM room r WHERE r.hotels.HID = "+hotelID;
+        return entityManager.createQuery(getRooms).getResultList();
+    }
+
     public void createNewRoom(roomDTO roomDTO, String imagePath) {
         // Find the hotel entity by HID
         hotel associatedHotel = hotelRepository.findById(roomDTO.getHID())

@@ -44,6 +44,18 @@ public class RoomsController {
         return roomsService.getAllRooms();
     }
 
+    @GetMapping("/api/bestRooms")
+    @ResponseBody
+    public List<room> getBestRooms(){
+        return roomsService.getBestRooms();
+    }
+
+    @GetMapping("/hotelId")
+    @ResponseBody
+    public List<room> getRoomsByHotelID(@RequestParam("param_id") Integer hotelID){
+        return roomsService.getRoomsByHID(hotelID);
+    }
+
     @GetMapping("/create")
     public String createRoom(Model model){
         roomDTO roomDTO = new roomDTO();

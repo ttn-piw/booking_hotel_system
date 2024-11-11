@@ -27,12 +27,10 @@ class RvAdapter(
         holder.itemView.apply {
             val txtHotelName = findViewById<TextView>(R.id.txtHotelName)
             val txtStar = findViewById<TextView>(R.id.txtStar)
-            val txtPrice = findViewById<TextView>(R.id.txtPrice)
             val imgHotel = findViewById<ImageView>(R.id.imgHotel)
 
             val hotel = list_hotel[position]
             txtHotelName.text = hotel.hname
-            txtPrice.text = hotel.hphone
 
             val starRating = hotel.hstar.toDouble()
             txtStar.text = "$starRating/5"
@@ -50,8 +48,9 @@ class RvAdapter(
                 val intent = Intent(context, Hotel_detail::class.java)
                 intent.putExtra("HotelName", hotel.hname)
                 intent.putExtra("HotelStar", hotel.hstar)
-                intent.putExtra("HotelPrice", hotel.hphone)
-                intent.putExtra("HotelImage", hotel.himg)
+                intent.putExtra("HotelAddress", hotel.haddress)
+                intent.putExtra("HotelPhone", hotel.hphone)
+                intent.putExtra("HotelImage", imageResId)
                 context.startActivity(intent)
             }
         }

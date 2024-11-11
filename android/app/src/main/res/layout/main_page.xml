@@ -41,11 +41,12 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/edtSessionEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:alpha="0.8"
-                        android:text="Hey, ${username}! Tell us where you want to go"
+                        android:text=""
                         android:textColor="#F08080"
                         android:textSize="25sp"
                         android:textStyle="bold" />

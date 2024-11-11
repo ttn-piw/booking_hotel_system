@@ -56,7 +56,26 @@
                 android:id="@+id/txtHDAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="2dp"
+                android:textSize="16sp"
+                android:drawableLeft="@drawable/map_marker"
                 android:text="Hẻm 142, Mậu Thân, Ninh Kiều, An Phú, Cần Thơ" />
+
+            <TextView
+                android:id="@+id/txtHDPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="15dp"
+                android:drawableLeft="@drawable/phone"
+                android:text="Contact:" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,12 +85,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
                     android:text="Introduction:" />
 
                 <TextView
                     android:id="@+id/txtHDDescribe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:text="This is a president room with all necessary things that you need for you to enjoy your trip at my hotel.
             All service will be given your first.
             This is a president room with all necessary things that you need for you to enjoy your trip at my hotel.
@@ -83,13 +106,13 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
                 android:orientation="vertical"
-                android:paddingLeft="10dp">
+                android:paddingLeft="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Available Room"
-                    android:textSize="28sp"
+                    android:textSize="19sp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -102,13 +125,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Rating"
-                    android:textSize="28sp"
+                    android:textSize="19sp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView

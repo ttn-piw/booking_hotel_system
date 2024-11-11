@@ -62,7 +62,5 @@ public class HotelsService {
                 .setMaxResults(5)
                 .getResultList();
         return resultList;
-
-
     }
 }
