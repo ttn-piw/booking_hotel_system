@@ -89,8 +89,8 @@
                 <i class="fa-solid fa-book"></i>Booking</a>
         </li>
         <li id="logout" class="nav-item">
-            <a class="nav-link" href="/index.html">
-                <i class="fa-solid fa-right-from-bracket"></i>Logout
+            <a class="nav-link" href="#" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
             </a>
         </li>
     </ul>
@@ -149,6 +149,26 @@
             })
             .catch(error => console.error("Error:", error));
         }
+    function logout() {
+        fetch('/api/v1/users/logout', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/index.html';
+                } else {
+                    alert('Logout failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while logging out');
+            });
+    }
 </script>
 
 </body>

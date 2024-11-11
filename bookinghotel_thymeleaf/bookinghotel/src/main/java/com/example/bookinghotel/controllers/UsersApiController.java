@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class UsersApiController {
     private UsersService usersService;
 
     @GetMapping("")
+    @ResponseBody
     public List<Users> getAllUsers() {
         return usersService.getAllUsers();
     }

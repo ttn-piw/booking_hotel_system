@@ -1,25 +1,25 @@
 package com.booking_hotel.booking_hotel.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class Users {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int UID;
+
+    @Column(name = "UEmail", nullable = false)
     private String UEmail;
+
+    @Column(name = "UPassword", nullable = false)
     private String UPassword;
+
+    @Column(name = "URole", nullable = false)
     private String URole;
 
-    public int getUID() {
-        return UID;
-    }
-
-    public void setUID(int UID) {
-        this.UID = UID;
-    }
+    // Getters and setters
 
     public String getUEmail() {
         return UEmail;
@@ -27,6 +27,14 @@ public class Users {
 
     public void setUEmail(String UEmail) {
         this.UEmail = UEmail;
+    }
+
+    public int getUID() {
+        return UID;
+    }
+
+    public void setUID(int UID) {
+        this.UID = UID;
     }
 
     public String getUPassword() {
@@ -45,3 +53,4 @@ public class Users {
         this.URole = URole;
     }
 }
+

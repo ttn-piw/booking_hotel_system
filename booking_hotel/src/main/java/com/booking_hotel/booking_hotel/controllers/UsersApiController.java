@@ -1,28 +1,36 @@
 package com.booking_hotel.booking_hotel.controllers;
 
 import com.booking_hotel.booking_hotel.models.Users;
-import com.booking_hotel.booking_hotel.services.UsersSerive;
+import com.booking_hotel.booking_hotel.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/v1")
+@Controller
+@RequestMapping(path= "users")
 public class UsersApiController {
+
     @Autowired
-    private UsersSerive usersService;
+    private UsersService usersService;
 
-
+    // API endpoint to retrieve all users
+    @GetMapping("") // Returns all users in JSON format
+    public List<Users> getAllUsers() {
+        return usersService.getAllUsers();
+    }
     @GetMapping("/test")
     public String testGetEndpoint(){
         return "Test Get end point";
     }
 
-    @GetMapping("/users")
-    public List<Users> getAllUsers() {
-        return usersService.getAllUsers();
+    @GetMapping("/view")
+    public String getAllUsersView(ModelMap model) {
+        return "user";
     }
 }

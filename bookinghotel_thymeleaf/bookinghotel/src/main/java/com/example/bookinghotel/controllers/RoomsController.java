@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @Controller
 @RequestMapping("/rooms")
@@ -35,6 +36,12 @@ public class RoomsController {
     public String showRoomsList(Model model){
         model.addAttribute("rooms", roomsService.getAllRooms());
         return "rooms/roomList.html";
+    }
+
+    @GetMapping("/api")
+    @ResponseBody
+    public List<room> getAllRoomsJSON(){
+        return roomsService.getAllRooms();
     }
 
     @GetMapping("/create")

@@ -62,7 +62,7 @@
             android:padding="13dp">
 
             <EditText
-                android:id="@+id/edtSignupemail"
+                android:id="@+id/edtLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="50"
@@ -72,7 +72,7 @@
                 android:layout_marginBottom="20dp"/>
 
             <EditText
-                android:id="@+id/edtSignuppassword"
+                android:id="@+id/edtLoginPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"

@@ -63,7 +63,7 @@
             android:padding="13dp">
 
             <EditText
-                android:id="@+id/edtSignupname"
+                android:id="@+id/edtSignupName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="50"
@@ -72,8 +72,38 @@
                 android:inputType="text"
                 android:layout_marginBottom="20dp" />
 
+            <RadioGroup
+                android:id="@+id/rdbGender"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rdbMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:text="Male" />
+
+                <RadioButton
+                    android:id="@+id/rdbFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Female" />
+            </RadioGroup>
+
             <EditText
-                android:id="@+id/edtSignupemail"
+                android:id="@+id/edtSignupAdress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="100"
+                android:hint="Address"
+                android:alpha="0.6"
+                android:inputType="text"
+                android:layout_marginBottom="20dp"/>
+
+            <EditText
+                android:id="@+id/edtSignupEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -83,7 +113,7 @@
                 android:layout_marginBottom="20dp"/>
 
             <EditText
-                android:id="@+id/edtSignuppassword"
+                android:id="@+id/edtSignupPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
@@ -92,34 +122,13 @@
                 android:layout_marginBottom="20dp"/>
 
             <EditText
-                android:id="@+id/edtSignuppassagain"
+                android:id="@+id/edtSignupPassAgain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Re-enter password"
                 android:alpha="0.6"
                 android:inputType="textPassword" />
         </LinearLayout>
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal">-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/ckbAccept"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="15dp"-->
-<!--                android:layout_marginRight="10dp"-->
-<!--                android:text="Accept" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/textView7"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginBottom="30dp"-->
-<!--                android:text="I have read and I accept all the requirement of your licence and your copyright to permit my device followed" />-->
-<!--        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="wrap_content"

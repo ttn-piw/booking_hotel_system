@@ -4,6 +4,8 @@ import com.example.bookinghotel.models.Users;
 import com.example.bookinghotel.models.person;
 import com.example.bookinghotel.repository.PersonRepository;
 import com.example.bookinghotel.repository.UsersRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +54,7 @@ public class UsersService {
     public String loginUser(String email, String password) {
         Users checkLogin = usersRepository.findByUEmailAndUPassword(email, password);
         if (checkLogin != null) {
+            System.out.println("ID: "+ checkLogin.getUID());
             System.out.println("Email: " + checkLogin.getUEmail());
             System.out.println("Password: " + checkLogin.getUPassword());
             System.out.println("Role: " + checkLogin.getURole());
@@ -60,5 +63,16 @@ public class UsersService {
             System.out.println("No user found");
             return null;
         }
+    }
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public Integer getUserIdByEmail(String email) {
+       String getUserID = "SELECT UID FROM users WHERE UEmail = '" + email + "'";
+       entityManager.createNativeQuery(getUserID).getSingleResult();
+
+       return (Integer) entityManager.createNativeQuery(getUserID).getSingleResult();
     }
 }

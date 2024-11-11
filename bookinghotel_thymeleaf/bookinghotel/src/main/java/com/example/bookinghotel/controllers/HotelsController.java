@@ -29,9 +29,21 @@ public class HotelsController {
     private HotelsService hotelsService;
 
     @GetMapping("")
-    public String showHotelList(Model model){
+    public String showHotelList(Model model) {
         model.addAttribute("hotels", hotelsService.getAllHotels());
         return "hotels/index.html";
+    }
+
+    @GetMapping("/api")
+    @ResponseBody
+    public List<hotel> getAllHotelsApi() {
+        return hotelsService.getAllHotels();
+    }
+
+    @GetMapping("/api/bestHotels")
+    @ResponseBody
+    public List<hotel> getAllHotelsBest() {
+        return hotelsService.getBestHotels();
     }
 
     @GetMapping("/create")

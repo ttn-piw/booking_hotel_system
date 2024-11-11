@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/bookings")
 public class BookingsController {
@@ -20,6 +22,7 @@ public class BookingsController {
         model.addAttribute("bookings", bookingsService.getAllBookings());
         return "bookings/bookingsList.html";
     }
+
 
     @PostMapping("/update-payment-status/{id}")
     public ResponseEntity<?> updatePaymentStatus(@PathVariable("id") int bookingId) {
