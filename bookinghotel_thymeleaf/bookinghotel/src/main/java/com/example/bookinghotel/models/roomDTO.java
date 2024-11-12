@@ -12,6 +12,17 @@ public class roomDTO {
     @NotEmpty(message = "Room star is required")
     private String CTGStar;
 
+    @NotEmpty(message = "Room price is required")
+    private String CTGPrice;
+
+    public @NotEmpty(message = "Room price is required") String getCTGPrice() {
+        return CTGPrice;
+    }
+
+    public void setCTGPrice(@NotEmpty(message = "Room price is required") String CTGPrice) {
+        this.CTGPrice = CTGPrice;
+    }
+
     @NotNull(message = "Room quantity is required")
     @Min(value = 1, message = "Room quantity must be at least 1")
     private Integer CTGQuantity;
@@ -32,6 +43,7 @@ public class roomDTO {
     public void setCTGStar(@NotEmpty(message = "Room star is required") String CTGStar) {
         this.CTGStar = CTGStar;
     }
+
 
     public @NotEmpty(message = "Category's name is required") String getCTGName() {
         return CTGName;

@@ -58,6 +58,7 @@ public class RoomsService {
         newRoom.setCTGQuantity(roomDTO.getCTGQuantity());
         newRoom.setCTGRemain(roomDTO.getCTGQuantity());
         newRoom.setCTGStar(roomDTO.getCTGStar());
+        newRoom.setCTGPrice(roomDTO.getCTGPrice());
         newRoom.setCTGImg(imagePath);
         newRoom.setHotels(associatedHotel);
 
@@ -79,6 +80,7 @@ public class RoomsService {
         existingRoom.setCTGQuantity(updatedRoom.getCTGQuantity());
         existingRoom.setCTGRemain(updatedRoom.getCTGRemain());
         existingRoom.setCTGStar(updatedRoom.getCTGStar());
+        existingRoom.setCTGPrice(updatedRoom.getCTGPrice());
 
         // Check if a new image is provided; if so, update it
         if (updatedRoom.getCTGImg() != null && !updatedRoom.getCTGImg().isEmpty()) {

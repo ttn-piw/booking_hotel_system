@@ -19,12 +19,15 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.example.booking_listview.model.Hotel
+import com.example.booking_listview.model.Room
 
 
 class Mainpage : AppCompatActivity() {
 
     private lateinit var rvHotelList: androidx.recyclerview.widget.RecyclerView
-    private lateinit var adapter: RvAdapter
+    private lateinit var RvAdapter: RvAdapter
+    private lateinit var rvRoomList: RecyclerView
+    private lateinit var RvRoomAdapter: RvRoomAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +45,19 @@ class Mainpage : AppCompatActivity() {
             LinearLayoutManager.HORIZONTAL,
             false)
 
-        fetchHotels()
+        fetchBestHotels()
+
+        rvRoomList = findViewById(R.id.rvRoomList)
+        rvRoomList.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+
+        fetchBestRooms()
     }
 
-    private fun fetchHotels() {
+    private fun fetchBestHotels() {
         val url = "http://10.0.2.2:8080/hotels/api/bestHotels"
         val queue = Volley.newRequestQueue(this)
 
@@ -66,14 +78,58 @@ class Mainpage : AppCompatActivity() {
                     hotelsList.add(hotel)
                 }
 
-                adapter = RvAdapter(hotelsList)
-                rvHotelList.adapter = adapter
+                RvAdapter = RvAdapter(hotelsList)
+                rvHotelList.adapter = RvAdapter
             },
             { error ->
                 Toast.makeText(this, "Failed to load hotels: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         )
 
+        queue.add(jsonArrayRequest)
+    }
+
+    private fun fetchBestRooms(){
+        val url = "http://10.0.2.2:8080/rooms/api/bestRooms"
+        val queue = Volley.newRequestQueue(this)
+
+        val jsonArrayRequest = JsonArrayRequest(
+            Request.Method.GET, url, null,
+            { response ->
+                val roomsList = mutableListOf<Room>()
+                for (i in 0 until response.length()) {
+                    val roomJson = response.getJSONObject(i)
+                    val hotelJson = roomJson.getJSONObject("hotels")
+
+                    val hotel = Hotel(
+                        hname = hotelJson.getString("hname"),
+                        hphone = hotelJson.getString("hphone"),
+                        hstar = hotelJson.getString("hstar"),
+                        himg = hotelJson.getString("himg"),
+                        hid = hotelJson.getInt("hid"),
+                        haddress = hotelJson.getString("haddress")
+                    )
+                    val room = Room(
+                        ctgid = roomJson.getInt("ctgid"),
+                        ctgstar = roomJson.getString("ctgstar"),
+                        ctgprice = roomJson.getString("ctgprice"),
+                        ctgname = roomJson.getString("ctgname"),
+                        ctgimg = roomJson.getString("ctgimg"),
+                        ctgremain =  roomJson.getInt("ctgremain"),
+                        ctghid = hotel,
+                        ctgquantity = roomJson.getInt("ctgquantity")
+                    )
+
+                    roomsList.add(room)
+                }
+
+                RvRoomAdapter = RvRoomAdapter(roomsList)
+                rvRoomList.adapter = RvRoomAdapter
+            },
+            { error ->
+                Toast.makeText(this, "Failed to load rooms: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        )
         queue.add(jsonArrayRequest)
     }
 }

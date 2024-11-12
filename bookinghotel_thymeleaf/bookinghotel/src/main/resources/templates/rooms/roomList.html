@@ -105,6 +105,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Star</th>
+            <th>Price</th>
             <th>Quantity</th>
             <th>Remain</th>
             <th>Image</th>
@@ -117,6 +118,7 @@
             <td th:text="${room.CTGID}"></td>
             <td th:text="${room.CTGName}"></td>
             <td th:text="${room.CTGStar}"></td>
+            <td th:text="${room.CTGPrice + '$'}"></td>
             <td th:text="${room.CTGQuantity}"></td>
             <td th:text="${room.CTGRemain}"></td>
             <td>

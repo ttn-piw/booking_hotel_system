@@ -15,19 +15,23 @@ class RoomDetail : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.room_detail)
 
-        val hotelName = intent.getStringExtra("hotelName")
-        val roomStar = intent.getStringExtra("roomStar")
-        val roomPrice = intent.getStringExtra("roomPrice")
+        val hotelName = intent.getStringExtra("RHotelName")
+        val roomName = intent.getStringExtra("RoomName")
+        val roomStar = intent.getStringExtra("RoomStar")
+        val roomPrice = intent.getStringExtra("RoomPrice")
+        val roomMaxPrice = roomPrice.toString().toInt() + 500;
         val roomImage = intent.getIntExtra("roomImage", 0)
 
         val imgRoomDetail = findViewById<LinearLayout>(R.id.imgRoomDetail)
-        val txtRoomDetail = findViewById<TextView>(id.txtHotelDetail)
+        val txtRoomDetail = findViewById<TextView>(id.txtRoomName)
+        val txtRHotelName = findViewById<TextView>(id.txtRHotelName)
         val txtStarDetail = findViewById<TextView>(id.txtStarDetail)
         val txtPriceDetail = findViewById<TextView>(id.txtPriceDetail)
 
-        txtRoomDetail.text = hotelName
-        txtStarDetail.text = roomStar
-        txtPriceDetail.text = roomPrice
-        imgRoomDetail.setBackgroundResource(roomImage)
+        txtRoomDetail.text = "$roomName Room"
+        txtRHotelName.text = hotelName
+        txtStarDetail.text = "$roomStar/5"
+        txtPriceDetail.text = "$roomPrice - $roomMaxPrice$"
+//        imgRoomDetail.setBackgroundResource(roomImage)
     }
 }

@@ -19,6 +19,10 @@ public class room {
     @NotEmpty(message = "Room star is required")
     private String CTGStar;
 
+    @Column(name = "CTGPrice", nullable = false)
+    @NotEmpty(message = "Room price is required")
+    private String CTGPrice;
+
     @Column(name = "CTGQuantity", nullable = true)
     @NotNull(message = "Room quantity is required")
     private Integer CTGQuantity;
@@ -34,6 +38,14 @@ public class room {
     @ManyToOne
     @JoinColumn(name = "HID",nullable = false)
     private hotel hotels;
+
+    public @NotEmpty(message = "Room price is required") String getCTGPrice() {
+        return CTGPrice;
+    }
+
+    public void setCTGPrice(@NotEmpty(message = "Room price is required") String CTGPrice) {
+        this.CTGPrice = CTGPrice;
+    }
 
     public int getCTGID() {
         return CTGID;
@@ -58,6 +70,7 @@ public class room {
     public void setCTGStar(@NotEmpty(message = "Room star is required") String CTGStar) {
         this.CTGStar = CTGStar;
     }
+
 
     public @NotNull(message = "Room quantity is required") Integer getCTGQuantity() {
         return CTGQuantity;

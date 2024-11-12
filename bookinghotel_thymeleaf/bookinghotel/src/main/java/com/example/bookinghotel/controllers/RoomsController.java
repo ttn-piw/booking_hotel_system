@@ -111,6 +111,7 @@ public class RoomsController {
             roomDTO roomDTO = new roomDTO();
             roomDTO.setCTGName(editRoom.getCTGName());
             roomDTO.setCTGStar(editRoom.getCTGStar());
+            roomDTO.setCTGPrice(editRoom.getCTGPrice());
             roomDTO.setCTGQuantity(editRoom.getCTGQuantity());
             roomDTO.setCTGRemain(editRoom.getCTGRemain());
             roomDTO.setCTGImgPath(editRoom.getCTGImg());

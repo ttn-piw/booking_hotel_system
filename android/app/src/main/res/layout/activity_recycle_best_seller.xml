@@ -43,9 +43,11 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/txtPrice"
+        android:id="@+id/txtBSAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="$91/night" />
+        android:textStyle="italic"
+        android:textSize="13sp"
+        android:text="The address is updating soon!" />
 
 </LinearLayout>

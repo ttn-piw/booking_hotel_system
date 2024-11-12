@@ -28,15 +28,16 @@ class RvAdapter(
             val txtHotelName = findViewById<TextView>(R.id.txtHotelName)
             val txtStar = findViewById<TextView>(R.id.txtStar)
             val imgHotel = findViewById<ImageView>(R.id.imgHotel)
+            val txtAddress = findViewById<TextView>(R.id.txtBSAddress)
 
             val hotel = list_hotel[position]
-            txtHotelName.text = hotel.hname
 
+            txtHotelName.text = hotel.hname
             val starRating = hotel.hstar.toDouble()
             txtStar.text = "$starRating/5"
+            txtAddress.text = hotel.haddress
 
             val imageResId = resources.getIdentifier(hotel.himg.split(".")[0], "drawable", context.packageName)
-
             if (imageResId != 0) {
                 imgHotel.setImageResource(imageResId)
             } else {
