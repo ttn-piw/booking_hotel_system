@@ -23,6 +23,12 @@ public class BookingsController {
         return "bookings/bookingsList.html";
     }
 
+    @GetMapping("/api/personId")
+    @ResponseBody
+    public List<booking> getBookingsByPersonId(@RequestParam("personId") int personId) {
+        return bookingsService.getBookingsByPID(personId);
+    }
+
 
     @PostMapping("/update-payment-status/{id}")
     public ResponseEntity<?> updatePaymentStatus(@PathVariable("id") int bookingId) {

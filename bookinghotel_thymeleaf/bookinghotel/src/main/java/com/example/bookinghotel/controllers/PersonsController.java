@@ -22,6 +22,7 @@ public class PersonsController {
         return "persons/managePersons.html";
     }
 
+
     @GetMapping("/delete")
     public String deletePersonByID(@RequestParam int id){
         personsService.deletePerson(id);
