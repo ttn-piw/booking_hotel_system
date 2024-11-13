@@ -47,11 +47,13 @@ class RvAdapter(
             imgHotel.setOnClickListener {
                 val context = it.context
                 val intent = Intent(context, Hotel_detail::class.java)
+                intent.putExtra("HotelId", hotel.hid)
                 intent.putExtra("HotelName", hotel.hname)
                 intent.putExtra("HotelStar", hotel.hstar)
                 intent.putExtra("HotelAddress", hotel.haddress)
                 intent.putExtra("HotelPhone", hotel.hphone)
                 intent.putExtra("HotelImage", imageResId)
+                intent.putExtra("HotelDes", hotel.hdes)
                 context.startActivity(intent)
             }
         }

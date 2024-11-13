@@ -35,6 +35,10 @@ public class room {
     @NotEmpty(message = "Room image is required")
     private String CTGImg;
 
+    @Column(name = "CTGDescription", nullable = false)
+    @NotEmpty(message = "Room description is required")
+    private String CTGDescription;
+
     @ManyToOne
     @JoinColumn(name = "HID",nullable = false)
     private hotel hotels;
@@ -94,6 +98,14 @@ public class room {
 
     public void setCTGImg(@NotEmpty(message = "Room image is required") String CTGImg) {
         this.CTGImg = CTGImg;
+    }
+
+    public @NotEmpty(message = "Room description is required") String getCTGDescription() {
+        return CTGDescription;
+    }
+
+    public void setCTGDescription(@NotEmpty(message = "Room description is required") String CTGDescription) {
+        this.CTGDescription = CTGDescription;
     }
 
     public hotel getHotels() {

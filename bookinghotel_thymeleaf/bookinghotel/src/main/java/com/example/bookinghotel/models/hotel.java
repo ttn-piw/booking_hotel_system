@@ -29,6 +29,17 @@ public class hotel {
     @Column(name = "HImg", nullable = false)
     private String HImg;
 
+    @Column(name = "HDescription")
+    private String HDescription;
+
+    public String getHDescription() {
+        return HDescription;
+    }
+
+    public void setHDescription(String HDescription) {
+        this.HDescription = HDescription;
+    }
+
     public int getHID() {
         return HID;
     }

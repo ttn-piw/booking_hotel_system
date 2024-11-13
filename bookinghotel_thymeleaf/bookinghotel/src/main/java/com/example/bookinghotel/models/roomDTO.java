@@ -15,6 +15,17 @@ public class roomDTO {
     @NotEmpty(message = "Room price is required")
     private String CTGPrice;
 
+    @NotEmpty(message = "Room description is required")
+    private String CTGDescription;
+
+    public @NotEmpty(message = "Room description is required") String getCTGDescription() {
+        return CTGDescription;
+    }
+
+    public void setCTGDescription(@NotEmpty(message = "Room description is required") String CTGDescription) {
+        this.CTGDescription = CTGDescription;
+    }
+
     public @NotEmpty(message = "Room price is required") String getCTGPrice() {
         return CTGPrice;
     }

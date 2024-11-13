@@ -8,6 +8,8 @@ import com.example.bookinghotel.services.HotelsService;
 import com.example.bookinghotel.services.RoomsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/rooms")
@@ -52,8 +55,8 @@ public class RoomsController {
 
     @GetMapping("/hotelId")
     @ResponseBody
-    public List<room> getRoomsByHotelID(@RequestParam("param_id") Integer hotelID){
-        return roomsService.getRoomsByHID(hotelID);
+    public List<room> getRoomsByHotelID(@RequestParam("hotel_id") Integer hotelId) {
+        return roomsService.getRoomsByHID(hotelId);
     }
 
     @GetMapping("/create")

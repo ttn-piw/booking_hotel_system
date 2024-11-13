@@ -18,20 +18,23 @@ class RoomDetail : AppCompatActivity() {
         val hotelName = intent.getStringExtra("RHotelName")
         val roomName = intent.getStringExtra("RoomName")
         val roomStar = intent.getStringExtra("RoomStar")
+        val roomDes = intent.getStringExtra("RoomDes")
         val roomPrice = intent.getStringExtra("RoomPrice")
         val roomMaxPrice = roomPrice.toString().toInt() + 500;
-        val roomImage = intent.getIntExtra("roomImage", 0)
+        val roomImage = intent.getIntExtra("RoomImage", 0)
 
         val imgRoomDetail = findViewById<LinearLayout>(R.id.imgRoomDetail)
         val txtRoomDetail = findViewById<TextView>(id.txtRoomName)
         val txtRHotelName = findViewById<TextView>(id.txtRHotelName)
         val txtStarDetail = findViewById<TextView>(id.txtStarDetail)
         val txtPriceDetail = findViewById<TextView>(id.txtPriceDetail)
+        val txtRoomDescription = findViewById<TextView>(R.id.txtRDescription);
 
         txtRoomDetail.text = "$roomName Room"
         txtRHotelName.text = hotelName
+        txtRoomDescription.text = roomDes
         txtStarDetail.text = "$roomStar/5"
         txtPriceDetail.text = "$roomPrice - $roomMaxPrice$"
-//        imgRoomDetail.setBackgroundResource(roomImage)
+        imgRoomDetail.setBackgroundResource(roomImage)
     }
 }

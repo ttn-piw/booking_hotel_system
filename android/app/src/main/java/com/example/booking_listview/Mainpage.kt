@@ -73,7 +73,8 @@ class Mainpage : AppCompatActivity() {
                         hstar = hotelJson.getString("hstar"),
                         hid = hotelJson.getInt("hid"),
                         himg = hotelJson.getString("himg"),
-                        haddress = hotelJson.getString("haddress")
+                        haddress = hotelJson.getString("haddress"),
+                        hdes = hotelJson.getString("hdescription")
                     )
                     hotelsList.add(hotel)
                 }
@@ -107,7 +108,8 @@ class Mainpage : AppCompatActivity() {
                         hstar = hotelJson.getString("hstar"),
                         himg = hotelJson.getString("himg"),
                         hid = hotelJson.getInt("hid"),
-                        haddress = hotelJson.getString("haddress")
+                        haddress = hotelJson.getString("haddress"),
+                        hdes = hotelJson.getString("hdescription")
                     )
                     val room = Room(
                         ctgid = roomJson.getInt("ctgid"),
@@ -117,7 +119,8 @@ class Mainpage : AppCompatActivity() {
                         ctgimg = roomJson.getString("ctgimg"),
                         ctgremain =  roomJson.getInt("ctgremain"),
                         ctghid = hotel,
-                        ctgquantity = roomJson.getInt("ctgquantity")
+                        ctgquantity = roomJson.getInt("ctgquantity"),
+                        ctgdes = roomJson.getString("ctgdescription")
                     )
 
                     roomsList.add(room)

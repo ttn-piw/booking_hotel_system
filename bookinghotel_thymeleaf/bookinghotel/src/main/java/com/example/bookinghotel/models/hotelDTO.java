@@ -17,7 +17,19 @@ public class hotelDTO {
     private String HPhone;
 
     private MultipartFile HImg;
+
+    @NotEmpty(message = "Hotel description is required")
+    private String HDescription;
+
     private String HImgPath;
+
+    public @NotEmpty(message = "Hotel description is required") String getHDescription() {
+        return HDescription;
+    }
+
+    public void setHDescription(@NotEmpty(message = "Hotel description is required") String HDescription) {
+        this.HDescription = HDescription;
+    }
 
     public @NotEmpty(message = "Hotel's address is required") String getHAddress() {
         return HAddress;

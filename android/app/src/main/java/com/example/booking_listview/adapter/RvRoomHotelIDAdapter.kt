@@ -14,32 +14,26 @@ import com.example.booking_listview.model.Hotel
 import com.example.booking_listview.model.OutDataRecycleView_Rooms
 import com.example.booking_listview.model.Room
 
-class RvRoomAdapter(
+class RvRoomHotelIDAdapter(
     val list_room: List<Room>
-) : RecyclerView.Adapter<RvRoomAdapter.RoomViewHolder>() {
+) : RecyclerView.Adapter<RvRoomHotelIDAdapter.RoomViewHolder>() {
 
     inner class RoomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):RoomViewHolder {
-        val viewHotel = LayoutInflater.from(parent.context).inflate(R.layout.recycleview_rooms, parent, false)
-        return RoomViewHolder(viewHotel)
+        val viewRoomAvailable = LayoutInflater.from(parent.context).inflate(R.layout.recycleview_rooms_hotel, parent, false)
+        return RoomViewHolder(viewRoomAvailable)
     }
 
     override fun onBindViewHolder(holder: RoomViewHolder, position: Int) {
         holder.itemView.apply {
-            val txtRHotelName = findViewById<TextView>(R.id.txtRHotelName)
-            val txtRoomName = findViewById<TextView>(R.id.txtRCategory)
-            val txtRoomPrice = findViewById<TextView>(R.id.txtRPrice)
-            val txtStar = findViewById<TextView>(R.id.txtRStar)
-            val imgRoom = findViewById<ImageView>(R.id.imgRoom)
+
+            val txtRoomName = findViewById<TextView>(R.id.txtRHCategory)
+            val txtStar = findViewById<TextView>(R.id.txtRHStar)
+            val imgRoom = findViewById<ImageView>(R.id.imgRoomHotel)
 
             val room = list_room[position]
-
-            txtRHotelName.text = room.ctghid.hname
-            txtRoomName.text = "${room.ctgname} room"
-
-            val priceMax = room.ctgprice.toInt() + 500;
-            txtRoomPrice.text = "${room.ctgprice} $ - ${priceMax.toString()}$"
+            txtRoomName.text = room.ctgname
 
             val starRating = room.ctgstar.toDouble()
             txtStar.text = "$starRating/5"
@@ -59,7 +53,7 @@ class RvRoomAdapter(
                 intent.putExtra("RoomStar", room.ctgstar)
                 intent.putExtra("RoomDes",room.ctgdes)
                 intent.putExtra("RoomPrice",room.ctgprice)
-                intent.putExtra("RHotelName", txtRHotelName.text.toString())
+                intent.putExtra("RHotelName", room.ctghid.hname)
                 intent.putExtra("RoomImage", imageResId)
                 context.startActivity(intent)
             }
