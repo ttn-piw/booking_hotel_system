@@ -9,13 +9,74 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        .container {
-            align-items: center;
+        body {
+            background-color: #f4f7fa;
+            font-family: Arial, sans-serif;
+            background: url(/images/4k_background.jpg);
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        .card {
+            width: 500px;
+            border-radius: 10px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.6); 
+            backdrop-filter: blur(5px); 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
         }
 
         .user-icon {
-            text-align: center;
             font-size: 50px;
+            color: black;
+        }
+
+        .form-control {
+            border-radius: 20px;
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            width: 100%;
+        }
+
+        .text-center a {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 576px) {
+            .card {
+                width: 100%;
+            }
+        }
+        .my-4 {
+            white-space: nowrap; 
+        }
+        label, input[type="radio"] {
+            display: inline;  
+            margin-right: 20px; 
+            margin-left: 20px;
+        }
+        .btn-primary {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;  /* Đảm bảo nút có cùng chiều rộng với các ô input */
         }
     </style>
 </head>
@@ -34,7 +95,6 @@
                                 <input type="text" name="fullname" id="fullname" class="form-control my-4 py-2"
                                     placeholder="Full Name" required />
                                 <div class="my-4">
-                                    <label>Sex</label><br>
                                     <input type="radio" name="sex" id="male" value="true" checked> Male
                                     <input type="radio" name="sex" id="female" value="false"> Female
                                 </div>

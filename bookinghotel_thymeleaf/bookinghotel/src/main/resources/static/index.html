@@ -1,22 +1,31 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         body {
             background-color: #f4f7fa;
             font-family: Arial, sans-serif;
+            background: url(/images/4k_background.jpg);
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
 
         .card {
             width: 500px;
             border-radius: 10px;
             padding: 2rem;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .user-icon {
@@ -33,8 +42,9 @@
             padding: 10px 20px;
             font-size: 16px;
             margin-bottom: 10px;
+            width: 100%;
+            font-size: 15px;
         }
-
         .card-body {
             width: 100%;
         }
@@ -56,60 +66,66 @@
         }
     </style>
 </head>
+
 <body>
-<section>
-    <div class="container mt-5 pt-5">
-        <div class="row">
-            <div class="col-12 col-sm-8 col-md-4 mx-auto">
-                <div class="card border-0 shadow">
-                    <div class="card-body">
-                        <div class="user-icon text-center">
-                            <i class="fa-solid fa-circle-user"></i>
-                        </div>
-                        <form id="loginForm">
-                            <input type="text" name="email" id="email" class="form-control my-4 py-2" placeholder="Username" />
-                            <input type="password" name="password" id="password" class="form-control my-4 py-2" placeholder="Password" />
-                            <div class="text-center mt-3">
-                                <button type="submit" class="btn btn-primary">Login</button>
-                                <a href="registerPage.html" class="nav-link">Not have an account? Sign up</a>
+    <section>
+        <div class="container mt-5 pt-5">
+            <div class="row">
+                <div class="col-12 col-sm-8 col-md-4 mx-auto">
+                    <div class="card border-0 shadow">
+                        <div class="card-body">
+                            <div class="user-icon text-center">
+                                <i class="fa-solid fa-circle-user"></i>
                             </div>
-                        </form>
-                        <div id="responseMessage" class="mt-3 text-center"></div>
+                            <h2 class="text-center mb-4">Sign In</h2>
+                            <form id="loginForm">
+                                <div class="input-group my-4">
+                                    <input type="text" name="email" id="email" class="form-control py-2"
+                                        placeholder="Username" />
+                                </div>
+                                <div class="input-group my-4">
+                                    <input type="password" name="password" id="password" class="form-control py-2"
+                                        placeholder="Password" />
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                    <a href="registerPage.html" class="nav-link">Not have an account? Sign up</a>
+                                </div>
+                            </form>
+                            <div id="responseMessage" class="mt-3 text-center"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script>
-    document.getElementById("loginForm").addEventListener("submit", async function(event) {
-        event.preventDefault();
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
 
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
-        const data = new URLSearchParams();
-        data.append("param_email", email);
-        data.append("param_password", password);
+            const response = await fetch('api/v1/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ param_email: email, param_password: password })
+            });
 
-        const response = await fetch('api/v1/users/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ param_email: email, param_password: password })
-        });
-
-        const message = await response.text();
-        if (response.ok) {
-            if (message === 'Go to admin page') {
-                window.location.href = 'http://localhost:8080/hotels';
+            const message = await response.text();
+            if (response.ok) {
+                if (message === 'Go to admin page') {
+                    window.location.href = 'http://localhost:8080/hotels';
+                } else {
+                    window.location.href = 'http://localhost:8080/hotels/home';
+                }
             } else {
-                window.location.href = 'http://localhost:8080/hotels/home';
+                alert("Invalid login");
             }
-        } else {
-            alert("Invalid login");
-        }
-    });
-</script>
+        });
+    </script>
 </body>
+
 </html>

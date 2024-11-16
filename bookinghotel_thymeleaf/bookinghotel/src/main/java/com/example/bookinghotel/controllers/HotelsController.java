@@ -39,6 +39,11 @@ public class HotelsController {
         return "Website/main_page.html";
     }
 
+    @GetMapping("/home/hotels")
+    public String showHotelPage(Model model) {
+        return "Website/hotels_page.html";
+    }
+
     @GetMapping("/api")
     @ResponseBody
     public List<hotel> getAllHotelsApi() {
