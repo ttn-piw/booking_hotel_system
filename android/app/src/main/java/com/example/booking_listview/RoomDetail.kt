@@ -1,11 +1,14 @@
 package com.example.booking_listview
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.booking_listview.R.id
 
 class RoomDetail : AppCompatActivity() {
@@ -36,5 +39,11 @@ class RoomDetail : AppCompatActivity() {
         txtStarDetail.text = "$roomStar/5"
         txtPriceDetail.text = "$roomPrice - $roomMaxPrice$"
         imgRoomDetail.setBackgroundResource(roomImage)
+
+        val btnAddToWishList = findViewById<ImageView>(R.id.btnAddToWishList)
+        btnAddToWishList.setOnClickListener{
+            val intent = Intent(this,WishList::class.java)
+            startActivity(intent)
+        }
     }
 }

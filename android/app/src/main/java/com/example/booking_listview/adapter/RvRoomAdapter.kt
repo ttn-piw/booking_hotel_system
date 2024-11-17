@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booking_listview.Hotel_detail
 import com.example.booking_listview.R
 import com.example.booking_listview.RoomDetail
+import com.example.booking_listview.WishList
 import com.example.booking_listview.model.Hotel
 import com.example.booking_listview.model.OutDataRecycleView_Rooms
 import com.example.booking_listview.model.Room
@@ -32,6 +34,7 @@ class RvRoomAdapter(
             val txtRoomPrice = findViewById<TextView>(R.id.txtRPrice)
             val txtStar = findViewById<TextView>(R.id.txtRStar)
             val imgRoom = findViewById<ImageView>(R.id.imgRoom)
+            val btnAddToWishList = findViewById<ImageView>(R.id.btnAddToWishList)
 
             val room = list_room[position]
 
@@ -61,6 +64,12 @@ class RvRoomAdapter(
                 intent.putExtra("RoomPrice",room.ctgprice)
                 intent.putExtra("RHotelName", txtRHotelName.text.toString())
                 intent.putExtra("RoomImage", imageResId)
+                context.startActivity(intent)
+            }
+
+            btnAddToWishList.setOnClickListener {
+                val context = it.context
+                val intent = Intent(context, WishList::class.java)
                 context.startActivity(intent)
             }
         }
