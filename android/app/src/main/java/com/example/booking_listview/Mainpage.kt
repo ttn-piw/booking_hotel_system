@@ -2,6 +2,8 @@ package com.example.booking_listview
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +20,11 @@ import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.example.booking_listview.model.Hotel
 import com.example.booking_listview.model.Room
+import org.json.JSONObject
 
 
 class Mainpage : AppCompatActivity() {
@@ -38,6 +43,8 @@ class Mainpage : AppCompatActivity() {
 
         val textSessionEmail = findViewById<TextView>(R.id.edtSessionEmail)
         textSessionEmail.text = "Welcome, $emailSession! Where do you want to go?"
+
+        getPID(emailSession.toString())
 
         rvHotelList = findViewById(R.id.rvHotelList)
         rvHotelList.layoutManager = LinearLayoutManager(
@@ -133,6 +140,40 @@ class Mainpage : AppCompatActivity() {
                 Toast.makeText(this, "Failed to load rooms: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         )
+        queue.add(jsonArrayRequest)
+    }
+
+    private fun getPID(emailSession: String) {
+        val queue = Volley.newRequestQueue(this)
+        val url = "http://10.0.2.2:8080/persons/getPID/personEmail?personEmail=$emailSession"
+
+        val jsonArrayRequest = JsonArrayRequest(
+            Request.Method.GET,
+            url,
+            null,
+            { response ->
+                try {
+                    if (response.length() > 0) {
+                        val firstItem = response.getJSONArray(0)
+
+                        val pid = firstItem.getInt(0)
+                        Log.d("PID", pid.toString());
+                        val sharedPreferences = getSharedPreferences("userSession", MODE_PRIVATE);
+                        val editor = sharedPreferences.edit();
+                        editor.putString("session_pid", pid.toString());
+                        editor.apply()
+
+                        val name = firstItem.getString(1)
+                        Log.d("NAME_PID", name);
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            },
+            { error ->
+                error.printStackTrace()
+            })
+
         queue.add(jsonArrayRequest)
     }
 }

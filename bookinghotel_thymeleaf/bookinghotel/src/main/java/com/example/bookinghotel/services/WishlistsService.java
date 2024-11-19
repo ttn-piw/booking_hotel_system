@@ -16,7 +16,16 @@ public class WishlistsService {
     @Autowired
     private WishlistsRepository wishlistsRepository;
 
-    public List<wishlistDTO> getWishlistByPID(String email) {
-        return wishlistsRepository.findWishlistByPID(email);
+    public List<wishlistDTO> getWishlistByEmail(String email) {
+        return wishlistsRepository.findWishlistByEmail(email);
+    }
+
+    public boolean addToWishlist(int pid, int ctgid){
+        wishlist wishlist = new wishlist();
+        wishlist.setPID(pid);
+        wishlist.setCTGID(ctgid);
+
+        wishlistsRepository.save(wishlist);
+        return true;
     }
 }

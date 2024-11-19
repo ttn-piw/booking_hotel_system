@@ -1,13 +1,14 @@
 package com.example.bookinghotel.controllers;
 
 
+import com.example.bookinghotel.models.person;
 import com.example.bookinghotel.services.PersonsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/persons")
@@ -28,4 +29,11 @@ public class PersonsController {
         personsService.deletePerson(id);
         return "redirect:/persons";
     }
+
+    @GetMapping("/getPID/personEmail")
+    @ResponseBody
+    public List<person> getPID(@RequestParam("personEmail") String email){
+        return personsService.getPIDFromEmail(email);
+    }
+
 }

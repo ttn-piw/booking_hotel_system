@@ -1,13 +1,20 @@
 package com.example.booking_listview.adapter
 
+import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.booking_listview.Hotel_detail
 import com.example.booking_listview.R
 import com.example.booking_listview.RoomDetail
@@ -67,9 +74,42 @@ class RvRoomAdapter(
                 context.startActivity(intent)
             }
 
+            val room_ctgid = room.ctgid;
+            val sharedPreferences = context.getSharedPreferences("userSession", Context.MODE_PRIVATE)
+            val pidSession = sharedPreferences.getString("session_pid","No PID found")
+
             btnAddToWishList.setOnClickListener {
                 val context = it.context
                 val intent = Intent(context, WishList::class.java)
+                Log.d("SESSION_ROOM: ",pidSession.toString())
+                Log.d("CTG_ID: ",room_ctgid.toInt().toString())
+
+                val pidSession = pidSession.toString()
+                val roomCtgid = room_ctgid.toString()
+
+                val queue = Volley.newRequestQueue(context)
+                val url = "http://10.0.2.2:8080/wishlist/addToWishlist"
+
+                val stringRequest = object : StringRequest(Method.POST, url,
+                    Response.Listener { response ->
+                        Log.d("Wishlist_res", response)
+                        Toast.makeText(context, "Added to Wishlist", Toast.LENGTH_SHORT).show()
+
+                    },
+                    Response.ErrorListener { error ->
+                        error.printStackTrace()
+                        Toast.makeText(context, "Failed to add to Wishlist", Toast.LENGTH_SHORT).show()
+                    }
+                ) {
+                    override fun getParams(): MutableMap<String, String> {
+                        val params = mutableMapOf<String, String>()
+                        params["pid"] = pidSession
+                        params["ctgid"] = roomCtgid
+                        return params
+                    }
+                }
+
+                queue.add(stringRequest)
                 context.startActivity(intent)
             }
         }

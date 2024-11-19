@@ -5,6 +5,7 @@ import com.example.bookinghotel.models.person;
 import com.example.bookinghotel.repository.PersonRepository;
 import com.example.bookinghotel.repository.UsersRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,4 +33,14 @@ public class PersonsService {
                 "WHERE p.PID = " + personID;
         entityManager.createNativeQuery(deletePersonInUsers).executeUpdate();
     }
+
+    @Transactional
+    public List<person> getPIDFromEmail(String email) {
+        String getPID = "SELECT p.PID, p.PName FROM person p JOIN Users u ON u.UID = p.users.UID WHERE u.UEmail = :email";
+            return entityManager.createQuery(getPID)
+                    .setParameter("email", email)
+                    .getResultList();
+
+    }
+
 }

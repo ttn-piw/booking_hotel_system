@@ -5,6 +5,8 @@ import com.example.bookinghotel.models.wishlist;
 import com.example.bookinghotel.models.wishlistDTO;
 import com.example.bookinghotel.services.WishlistsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +19,19 @@ public class WishlistsController {
 
     @GetMapping("/api/personEmail")
     @ResponseBody
-    public List<wishlistDTO> getWishlistsByPersonId(@RequestParam("personEmail") String personEmail) {
-        return wishlistsService.getWishlistByPID(personEmail);
+    public List<wishlistDTO> getWishlistsByPersonMail(@RequestParam("personEmail") String personEmail) {
+        return wishlistsService.getWishlistByEmail(personEmail);
     }
+
+    @PostMapping("/addToWishlist")
+    @ResponseBody
+    public ResponseEntity<String> addToWishlist(@RequestParam("pid") int pid, @RequestParam("ctgid") int ctgid) {
+        boolean added = wishlistsService.addToWishlist(pid, ctgid);
+        if (added) {
+            return ResponseEntity.ok("Added to wishlist successfully!!");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Failed to add to wishlist!!");
+        }
+    }
+
 }
