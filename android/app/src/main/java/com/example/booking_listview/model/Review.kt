@@ -4,8 +4,8 @@ import android.app.Person
 
 data class Review(
     val review_id: Int,
-    val ctgid : Room,
-    val pid: Person,
+    val ctgname : String,
+    val pname: String,
     val rating: String,
     val rating_text: String,
 )

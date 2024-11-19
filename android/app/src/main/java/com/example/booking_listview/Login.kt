@@ -3,6 +3,7 @@ package com.example.booking_listview
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -43,6 +44,7 @@ class Login : AppCompatActivity() {
                     Request.Method.POST,
                     url,
                     Response.Listener<String> { response ->
+                        Log.d("LOGIN", response)
                         println("Response is: $response")
                         Toast.makeText(this, "Login Successfully!", Toast.LENGTH_SHORT).show()
 

@@ -16,6 +16,15 @@ public class wishlist {
 
     private Date WDate;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PID", insertable = false, updatable = false)
+    private person persons;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CTGID", insertable = false, updatable = false)
+    private room rooms;
+
     @PrePersist
     public void prePersist() {
         this.WDate = new Date();
@@ -43,5 +52,21 @@ public class wishlist {
 
     public void setWDate(Date WDate) {
         this.WDate = WDate;
+    }
+
+    public person getPersons() {
+        return persons;
+    }
+
+    public void setPersons(person persons) {
+        this.persons = persons;
+    }
+
+    public room getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(room rooms) {
+        this.rooms = rooms;
     }
 }

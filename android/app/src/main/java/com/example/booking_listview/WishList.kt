@@ -21,17 +21,15 @@ class WishList : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerViewWishlist)
 
-        // Tạo dữ liệu mẫu cho khách sạn và phòng
+        // Data example
         val hotel = Hotel("Hotel ABC", "hotel_image", 1, "2313123131", "4.5", "Can Tho", "Description of the hotel")
         val room = Room(1, "Standard", "room_image", 5, 10, "5 stars", "100 USD", hotel, "Room description")
 
-        roomList.add(room) // Thêm phòng vào danh sách phòng
+        roomList.add(room)
 
-        // Cài đặt Adapter
         wishlistAdapter = RvWishListAdapter(
             roomList,
             removeListener = { room ->
-                // Xử lý khi nhấn "Remove"
                 roomList.remove(room)
                 wishlistAdapter.notifyDataSetChanged() // Cập nhật lại adapter sau khi xóa
             },

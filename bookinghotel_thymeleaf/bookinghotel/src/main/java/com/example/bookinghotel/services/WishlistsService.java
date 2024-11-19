@@ -1,6 +1,7 @@
 package com.example.bookinghotel.services;
 
 import com.example.bookinghotel.models.wishlist;
+import com.example.bookinghotel.models.wishlistDTO;
 import com.example.bookinghotel.repository.WishlistsRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -15,15 +16,7 @@ public class WishlistsService {
     @Autowired
     private WishlistsRepository wishlistsRepository;
 
-    public List<wishlist> getAllWishlists() {
-        return wishlistsRepository.findAll();
-    }
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Transactional
-    public List<wishlist> getWishlistByPID(int pid) {
-        return wishlistsRepository.findByPID(pid);
+    public List<wishlistDTO> getWishlistByPID(String email) {
+        return wishlistsRepository.findWishlistByPID(email);
     }
 }
