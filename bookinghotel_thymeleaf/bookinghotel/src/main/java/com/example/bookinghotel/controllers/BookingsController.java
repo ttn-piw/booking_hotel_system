@@ -43,4 +43,17 @@ public class BookingsController {
         }
     }
 
+    @PostMapping("/booked")
+    public ResponseEntity<String> bookedRoom(@RequestParam("pid") int pid,
+                                             @RequestParam("ctgid") int ctgid,
+                                             @RequestParam("hid") int hid,
+                                             @RequestParam("money") String money) {
+        Boolean booked = bookingsService.bookedRoom(pid,ctgid,hid,money);
+        if (booked) {
+            return ResponseEntity.ok("Booking successfully!");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
 }

@@ -71,15 +71,16 @@ class RvWishListAdapter(
                     intent.putExtra("RoomDes", room.ctgdes)
                     intent.putExtra("RoomPrice", room.ctgprice)
                     intent.putExtra("RHotelName", room.ctghid.hname)
-                    intent.putExtra("RoomImage", room.ctgimg)
+                    intent.putExtra("RoomImage", imageResId)
+
+                    Log.d("RommImage", room.ctgimg);
+
                     context.startActivity(intent)
                 } else {
                     Toast.makeText(context, "No rooms available", Toast.LENGTH_SHORT).show()
                 }
             }
         }
-
-
 
         holder.removeButton.setOnClickListener {
             val context = it.context

@@ -3,6 +3,7 @@ package com.example.bookinghotel.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -24,8 +25,13 @@ public class booking {
     @JoinColumn(name = "CTGID",nullable = false)
     private room room;
 
-    @Column(name = "BDate", nullable = false)
-    private Date BDate;
+    @Column(name = "BDate", nullable = false, updatable = false)
+    private LocalDateTime BDate;
+
+    @PrePersist
+    public void prePersist() {
+        this.BDate = LocalDateTime.now();
+    }
 
     @Column(name = "BMoney", nullable = false)
     private String BMoney;
@@ -65,11 +71,11 @@ public class booking {
         this.room = room;
     }
 
-    public Date getBDate() {
+    public LocalDateTime getBDate() {
         return BDate;
     }
 
-    public void setBDate(Date BDate) {
+    public void setBDate(LocalDateTime BDate) {
         this.BDate = BDate;
     }
 

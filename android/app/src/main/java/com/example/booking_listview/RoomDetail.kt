@@ -3,6 +3,7 @@ package com.example.booking_listview
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -25,6 +26,7 @@ class RoomDetail : AppCompatActivity() {
         val roomPrice = intent.getStringExtra("RoomPrice")
         val roomMaxPrice = roomPrice.toString().toInt() + 500;
         val roomImage = intent.getIntExtra("RoomImage", 0)
+        Log.d("RoomImgDT",roomImage.toString());
 
         val imgRoomDetail = findViewById<LinearLayout>(R.id.imgRoomDetail)
         val txtRoomDetail = findViewById<TextView>(id.txtRoomName)
