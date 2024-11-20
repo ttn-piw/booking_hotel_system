@@ -28,4 +28,22 @@ public class WishlistsService {
         wishlistsRepository.save(wishlist);
         return true;
     }
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public boolean deleteFromWishList(int pid, int ctgid){
+        String deleteQuery = "DELETE FROM wishlist WHERE pid = :pid AND ctgid = :ctgid";
+        try {
+            entityManager.createNativeQuery(deleteQuery)
+                    .setParameter("pid", pid)
+                    .setParameter("ctgid", ctgid)
+                    .executeUpdate();
+            return true;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

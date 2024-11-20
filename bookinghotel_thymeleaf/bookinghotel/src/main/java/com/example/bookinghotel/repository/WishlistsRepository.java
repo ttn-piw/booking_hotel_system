@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface WishlistsRepository extends JpaRepository<wishlist, compositeKey_WL> {
-    @Query("SELECT new com.example.bookinghotel.models.wishlistDTO(w.PID, w.CTGID, p.PName, r.CTGName, r.CTGImg, h.HName) " +
+    @Query("SELECT new com.example.bookinghotel.models.wishlistDTO(w.PID, w.CTGID, p.PName, r.CTGName, r.CTGImg, h.HID, h.HName) " +
             "FROM wishlist w " +
             "JOIN w.persons p " +
             "JOIN w.rooms r " +

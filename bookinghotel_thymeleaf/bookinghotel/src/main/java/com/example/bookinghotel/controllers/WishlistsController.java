@@ -34,4 +34,15 @@ public class WishlistsController {
         }
     }
 
+    @PostMapping("/deleteFromWishList")
+    @ResponseBody
+    public ResponseEntity<String> deleteFromWishLish(@RequestParam("pid") int pid, @RequestParam("ctgid") int ctgid) {
+        boolean deleted = wishlistsService.deleteFromWishList(pid,ctgid);
+        if (deleted) {
+            return ResponseEntity.ok("Deleted from wishlist successfully!!");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Failed to delete wishlist!!");
+        }
+    }
+
 }

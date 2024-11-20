@@ -6,14 +6,16 @@ public class wishlistDTO {
     private String PName;
     private String RName;
     private String RImage;
+    private Integer HID;
     private String HName;
 
-    public wishlistDTO(Integer pid, Integer ctgid, String PName, String RName, String RImage, String HName) {
+    public wishlistDTO(Integer pid, Integer ctgid, String PName, String RName, String RImage, Integer HID, String HName) {
         this.pid = pid;
         this.ctgid = ctgid;
         this.PName = PName;
         this.RName = RName;
         this.HName = HName;
+        this.HID = HID;
         this.RImage = RImage;
     }
 
@@ -63,5 +65,13 @@ public class wishlistDTO {
 
     public void setRImage(String RImage) {
         this.RImage = RImage;
+    }
+
+    public Integer getHID() {
+        return HID;
+    }
+
+    public void setHID(Integer HID) {
+        this.HID = HID;
     }
 }

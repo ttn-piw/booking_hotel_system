@@ -18,7 +18,6 @@ class WishList : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var wishlistAdapter: RvWishListAdapter
-    private val roomList = mutableListOf<Room>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,10 +47,11 @@ class WishList : AppCompatActivity() {
                     val wishlist = Wishlist_model(
                         ctgid = wishlistJson.getInt("ctgid"),
                         pid = wishlistJson.getInt("pid"),
+                        hid = wishlistJson.getInt("hid"),
                         pname = wishlistJson.getString("pname"),
                         hname = wishlistJson.getString("hname"),
                         rname = wishlistJson.getString("rname"),
-                        rimg = wishlistJson.getString("rimage")
+                        rimg = wishlistJson.getString("rimage"),
                     )
                     wishList.add(wishlist)
                     Log.d("WL: ", wishlist.toString())
