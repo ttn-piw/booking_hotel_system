@@ -46,6 +46,12 @@ class MainActivity : AppCompatActivity() {
            val intent = Intent(this,RoomDetail::class.java)
             startActivity(intent)
         }
+
+        val btnPayment = findViewById<Button>(id.btnPayment)
+        btnPayment.setOnClickListener{
+            val intent = Intent(this,Payment::class.java)
+            startActivity(intent)
+        }
     }
 
     public fun addevents() {

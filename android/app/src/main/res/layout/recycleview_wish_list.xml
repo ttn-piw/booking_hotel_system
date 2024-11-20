@@ -49,13 +49,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="Remove" />
+                android:text="Remove"
+                android:textColor="#B71C1C"
+                android:backgroundTint="#FFCDD2"
+                android:layout_marginEnd="8dp"/>
 
             <Button
                 android:id="@+id/btnBooking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Booking" />
+                android:text="Booking"
+                android:backgroundTint="#1976D2"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="8dp"/>
         </LinearLayout>
     </LinearLayout>
 
