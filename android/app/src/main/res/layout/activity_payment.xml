@@ -48,7 +48,7 @@
                 android:layout_gravity="right">
 
                 <TextView
-                    android:id="@+id/tvBookingTime"
+                    android:id="@+id/txtCreateAt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2024-11-21 10:30 AM"
@@ -74,7 +74,7 @@
                     android:layout_marginBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvUserName"
+                    android:id="@+id/txtUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Name: John Doe"
@@ -85,7 +85,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvUserEmail"
+                android:id="@+id/txtUserEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email: john.doe@example.com"
@@ -94,10 +94,35 @@
                 android:layout_marginBottom="4dp" />
 
             <TextView
-                android:id="@+id/tvUserPhone"
+                android:id="@+id/txtUserAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Address: Can Tho"
+                android:textSize="16sp"
+                android:textColor="#333" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Booked Info"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/txtCheckInDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Check in: 21/11/2024"
+                android:textSize="16sp"
+                android:textColor="#333" />
+            <TextView
+                android:id="@+id/txtCheckOutDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Check out: 22/11/2024"
                 android:textSize="16sp"
                 android:textColor="#333" />
         </LinearLayout>
@@ -122,7 +147,7 @@
             android:padding="16dp">
 
             <ImageView
-                android:id="@+id/imgHotel"
+                android:id="@+id/imgHotelPM"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginEnd="16dp"
@@ -136,7 +161,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/tvHotelName"
+                    android:id="@+id/txtHotelNamePM"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Luxury Hotel"
@@ -146,7 +171,7 @@
                     android:layout_marginBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvHotelAddress"
+                    android:id="@+id/txtHotelAddressPM"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="123 Main St, City, Country"
@@ -175,7 +200,7 @@
             android:padding="16dp">
 
             <ImageView
-                android:id="@+id/imgRoom"
+                android:id="@+id/imgRoomPM"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginEnd="16dp"
@@ -189,7 +214,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/tvRoomName"
+                    android:id="@+id/txtRoomNamePM"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Deluxe Suite"
@@ -199,7 +224,7 @@
                     android:layout_marginBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvRoomPrice"
+                    android:id="@+id/txtRoomPricePM"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$250/night"
@@ -238,7 +263,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvTotalMoney"
+                android:id="@+id/txtTotalMoneyPM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$500"
@@ -263,7 +288,7 @@
         android:gravity="end">
 
         <Button
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnCancelPM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
@@ -272,7 +297,7 @@
             android:layout_marginEnd="8dp" />
 
         <Button
-            android:id="@+id/btnConfirm"
+            android:id="@+id/btnConfirmPM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Confirm"

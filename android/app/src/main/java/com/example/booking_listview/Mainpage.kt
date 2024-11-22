@@ -158,18 +158,20 @@ class Mainpage : AppCompatActivity() {
                         val firstItem = response.getJSONArray(0)
 
                         val pid = firstItem.getInt(0)
-                        val address = response.getString(2)
+                        val personName = firstItem.getString(1)
+                        val address = firstItem.getString(2)
 
                         Log.d("PID", pid.toString())
+                        Log.d("NAME_P", personName);
                         Log.d("ADDRESS", address)
 
                         val sharedPreferences = getSharedPreferences("userSession", MODE_PRIVATE);
                         val editor = sharedPreferences.edit();
                         editor.putString("session_pid", pid.toString());
-                        editor.apply()
+                        editor.putString("session_name", personName)
+                        editor.putString("session_address", personName)
+                        editor.apply();
 
-                        val name = firstItem.getString(1)
-                        Log.d("NAME_PID", name);
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

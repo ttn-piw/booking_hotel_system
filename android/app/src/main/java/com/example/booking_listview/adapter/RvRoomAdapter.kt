@@ -41,8 +41,10 @@ class RvRoomAdapter(
             val btnAddToWishList = findViewById<ImageView>(R.id.btnAddToWishList)
 
             val room = list_room[position]
+            val hotelImg = room.ctghid.himg
 
-            txtRHotelName.text = room.ctghid.hname
+
+                txtRHotelName.text = room.ctghid.hname
             txtRoomName.text = "${room.ctgname} room"
             val priceMax = room.ctgprice.toInt() + 500
             txtRoomPrice.text = "${room.ctgprice} $ - ${priceMax}$"
@@ -61,6 +63,8 @@ class RvRoomAdapter(
                 val context = it.context
                 val intent = Intent(context, RoomDetail::class.java)
                 intent.putExtra("RoomName", room.ctgname)
+                intent.putExtra("RHotelAddress", room.ctghid.haddress)
+                intent.putExtra("HotelImg", hotelImg)
                 intent.putExtra("RoomStar", room.ctgstar)
                 intent.putExtra("RoomDes", room.ctgdes)
                 intent.putExtra("RoomPrice", room.ctgprice)

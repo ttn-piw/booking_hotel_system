@@ -9,11 +9,15 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.booking_listview.R.id
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class RoomDetail : AppCompatActivity() {
     @SuppressLint("WrongViewCast", "MissingInflatedId")
@@ -23,13 +27,17 @@ class RoomDetail : AppCompatActivity() {
         setContentView(R.layout.room_detail)
 
         val hotelName = intent.getStringExtra("RHotelName")
+        val hotelAddress = intent.getStringExtra("RHotelAddress")
         val roomName = intent.getStringExtra("RoomName")
         val roomStar = intent.getStringExtra("RoomStar")
         val roomDes = intent.getStringExtra("RoomDes")
         val roomPrice = intent.getStringExtra("RoomPrice")
         val roomMaxPrice = roomPrice.toString().toInt() + 500;
         val roomImage = intent.getIntExtra("RoomImage", 0)
+        val hotelImage = intent.getStringExtra("HotelImg")
+
         Log.d("RoomImgDT",roomImage.toString());
+        Log.d("HotelIMG",hotelImage.toString());
 
         val imgRoomDetail = findViewById<LinearLayout>(R.id.imgRoomDetail)
         val txtRoomDetail = findViewById<TextView>(id.txtRoomName)
@@ -45,33 +53,59 @@ class RoomDetail : AppCompatActivity() {
         txtPriceDetail.text = "$roomPrice - $roomMaxPrice$"
         imgRoomDetail.setBackgroundResource(roomImage)
 
-        /////////////////////////DATE//////////////////////////////////////
+/////////////////////////DATE////////////////////////////////////
         val txtCheckInDate = findViewById<TextView>(R.id.txtCheckInDate)
         val txtCheckOutDate = findViewById<TextView>(R.id.txtCheckOutDate)
+
+        var checkInDate: Date? = null
+        var checkOutDate: Date? = null
+        var daysBetween: Long = 0
 
         txtCheckInDate.setOnClickListener {
             showDatePicker { date ->
                 txtCheckInDate.text = date
+                checkInDate = parseDate(date)
             }
         }
 
         txtCheckOutDate.setOnClickListener {
             showDatePicker { date ->
                 txtCheckOutDate.text = date
+                checkOutDate = parseDate(date)
+
+                checkInDate?.let {
+                    checkOutDate?.let {
+                        daysBetween = calculateDaysBetween(it, checkOutDate!!)
+                        Log.d("DAYS: ",daysBetween.toString())
+                    }
+                }
             }
         }
 
-        //////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
         val btnAddToWishList = findViewById<ImageView>(R.id.btnAddToWishList)
         btnAddToWishList.setOnClickListener{
-            val intent = Intent(this,WishList::class.java)
+            val intent = Intent(this, WishList::class.java)
             startActivity(intent)
         }
 
         val btnBooking = findViewById<Button>(R.id.btnBookingRD)
         btnBooking.setOnClickListener {
-            val intent = Intent(this,Payment::class.java)
-            startActivity(intent);
+            val checkInDateString = txtCheckInDate.text.toString()
+            val checkOutDateString = txtCheckOutDate.text.toString()
+
+            val intent = Intent(this, Payment::class.java)
+            intent.putExtra("BookedDate", daysBetween)
+            intent.putExtra("HotelNamePM", hotelName)
+            intent.putExtra("HotelAddressPM", hotelAddress)
+            intent.putExtra("HotelImgPM", hotelImage)
+//            intent.putExtra("RoomIDPM", ro)
+            intent.putExtra("RoomNamePM", roomName)
+            intent.putExtra("RoomImgPM", roomImage)
+            intent.putExtra("RoomPricePM", roomPrice)
+            intent.putExtra("CheckIn", checkInDateString)
+            intent.putExtra("CheckOut", checkOutDateString)
+            startActivity(intent)
         }
 
     }
@@ -85,11 +119,26 @@ class RoomDetail : AppCompatActivity() {
         val datePickerDialog = DatePickerDialog(
             this,
             { _, selectedYear, selectedMonth, selectedDay ->
-                val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                val formattedDate = "$selectedYear/${selectedMonth + 1}/$selectedDay"
                 onDateSelected(formattedDate)
             },
             year, month, day
         )
         datePickerDialog.show()
+    }
+
+    private fun parseDate(date: String): Date? {
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        return try {
+            dateFormat.parse(date)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun calculateDaysBetween(startDate: Date, endDate: Date): Long {
+        val diffInMillis = endDate.time - startDate.time // mili seconds
+        return diffInMillis / (1000 * 60 * 60 * 24)
     }
 }
