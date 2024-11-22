@@ -6,21 +6,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.booking_listview.Hotel_detail
+import com.example.booking_listview.Payment
 import com.example.booking_listview.R
 import com.example.booking_listview.RoomDetail
 import com.example.booking_listview.WishList
-import com.example.booking_listview.model.Hotel
-import com.example.booking_listview.model.OutDataRecycleView_Rooms
 import com.example.booking_listview.model.Room
 
 class RvRoomAdapter(
@@ -29,7 +26,7 @@ class RvRoomAdapter(
 
     inner class RoomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):RoomViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder {
         val viewHotel = LayoutInflater.from(parent.context).inflate(R.layout.recycleview_rooms, parent, false)
         return RoomViewHolder(viewHotel)
     }
@@ -47,42 +44,41 @@ class RvRoomAdapter(
 
             txtRHotelName.text = room.ctghid.hname
             txtRoomName.text = "${room.ctgname} room"
-
-            val priceMax = room.ctgprice.toInt() + 500;
-            txtRoomPrice.text = "${room.ctgprice} $ - ${priceMax.toString()}$"
-
+            val priceMax = room.ctgprice.toInt() + 500
+            txtRoomPrice.text = "${room.ctgprice} $ - ${priceMax}$"
             val starRating = room.ctgstar.toDouble()
             txtStar.text = "$starRating/5"
 
             val imageResId = resources.getIdentifier(room.ctgimg.split(".")[0], "drawable", context.packageName)
-
             if (imageResId != 0) {
                 imgRoom.setImageResource(imageResId)
             } else {
                 imgRoom.setImageResource(R.drawable.not_found)
             }
 
+            // Room image click listener
             imgRoom.setOnClickListener {
                 val context = it.context
                 val intent = Intent(context, RoomDetail::class.java)
                 intent.putExtra("RoomName", room.ctgname)
                 intent.putExtra("RoomStar", room.ctgstar)
-                intent.putExtra("RoomDes",room.ctgdes)
-                intent.putExtra("RoomPrice",room.ctgprice)
+                intent.putExtra("RoomDes", room.ctgdes)
+                intent.putExtra("RoomPrice", room.ctgprice)
                 intent.putExtra("RHotelName", txtRHotelName.text.toString())
                 intent.putExtra("RoomImage", imageResId)
                 context.startActivity(intent)
             }
 
-            val room_ctgid = room.ctgid;
+            // Add to wishlist functionality
+            val room_ctgid = room.ctgid
             val sharedPreferences = context.getSharedPreferences("userSession", Context.MODE_PRIVATE)
-            val pidSession = sharedPreferences.getString("session_pid","No PID found")
+            val pidSession = sharedPreferences.getString("session_pid", "No PID found")
 
             btnAddToWishList.setOnClickListener {
                 val context = it.context
                 val intent = Intent(context, WishList::class.java)
-                Log.d("SESSION_ROOM: ",pidSession.toString())
-                Log.d("CTG_ID: ",room_ctgid.toInt().toString())
+                Log.d("SESSION_ROOM: ", pidSession.toString())
+                Log.d("CTG_ID: ", room_ctgid.toInt().toString())
 
                 val pidSession = pidSession.toString()
                 val roomCtgid = room_ctgid.toString()
@@ -94,7 +90,6 @@ class RvRoomAdapter(
                     Response.Listener { response ->
                         Log.d("Wishlist_res", response)
                         Toast.makeText(context, "Added to Wishlist", Toast.LENGTH_SHORT).show()
-
                     },
                     Response.ErrorListener { error ->
                         error.printStackTrace()
@@ -112,6 +107,7 @@ class RvRoomAdapter(
                 queue.add(stringRequest)
                 context.startActivity(intent)
             }
+
         }
     }
 

@@ -36,7 +36,7 @@ public class PersonsService {
 
     @Transactional
     public List<person> getPIDFromEmail(String email) {
-        String getPID = "SELECT p.PID, p.PName FROM person p JOIN Users u ON u.UID = p.users.UID WHERE u.UEmail = :email";
+        String getPID = "SELECT p.PID, p.PName, p.PAddress FROM person p JOIN Users u ON u.UID = p.users.UID WHERE u.UEmail = :email";
             return entityManager.createQuery(getPID)
                     .setParameter("email", email)
                     .getResultList();

@@ -154,10 +154,15 @@ class Mainpage : AppCompatActivity() {
             { response ->
                 try {
                     if (response.length() > 0) {
+
                         val firstItem = response.getJSONArray(0)
 
                         val pid = firstItem.getInt(0)
-                        Log.d("PID", pid.toString());
+                        val address = response.getString(2)
+
+                        Log.d("PID", pid.toString())
+                        Log.d("ADDRESS", address)
+
                         val sharedPreferences = getSharedPreferences("userSession", MODE_PRIVATE);
                         val editor = sharedPreferences.edit();
                         editor.putString("session_pid", pid.toString());

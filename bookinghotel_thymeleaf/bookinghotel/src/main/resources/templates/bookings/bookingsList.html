@@ -105,7 +105,7 @@
             <th>Customer</th>
             <th>Hotel</th>
             <th>Room</th>
-            <th>Date</th>
+<!--            <th>Date</th>-->
             <th>Total Money</th>
             <th>Status</th>
             <th>Action</th>
@@ -117,7 +117,7 @@
             <td th:text="${booking.person.PName}"></td>
             <td th:text="${booking.hotel.HName}"></td>
             <td th:text="${booking.room.CTGName}"></td>
-            <td th:text="${#dates.format(booking.BDate, 'yyyy-MM-dd')}"></td>
+<!--            <td th:text="${#dates.format(booking.BDate, 'yyyy-MM-dd')}"></td>-->
             <td th:text="${booking.BMoney}"></td>
             <td th:text="${booking.BPay ? 'Paid' : 'Not Paid'}"></td>
             <td>
@@ -148,7 +148,7 @@
                 }
             })
             .catch(error => console.error("Error:", error));
-        }
+    }
     function logout() {
         fetch('/api/v1/users/logout', {
             method: 'POST',

@@ -3,11 +3,13 @@ package com.example.bookinghotel.controllers;
 import com.example.bookinghotel.models.booking;
 import com.example.bookinghotel.services.BookingsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -47,13 +49,16 @@ public class BookingsController {
     public ResponseEntity<String> bookedRoom(@RequestParam("pid") int pid,
                                              @RequestParam("ctgid") int ctgid,
                                              @RequestParam("hid") int hid,
-                                             @RequestParam("money") String money) {
-        Boolean booked = bookingsService.bookedRoom(pid,ctgid,hid,money);
+                                             @RequestParam("money") String money,
+                                             @RequestParam("checkInDate") LocalDate checkInDate,
+                                             @RequestParam("checkOutDate") LocalDate checkOutDate) {
+        Boolean booked = bookingsService.bookedRoom(pid, ctgid, hid, money, checkInDate, checkOutDate);
         if (booked) {
             return ResponseEntity.ok("Booking successfully!");
         } else {
             return ResponseEntity.notFound().build();
         }
-
     }
+
+
 }

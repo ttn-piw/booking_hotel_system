@@ -2,7 +2,9 @@ package com.example.bookinghotel.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -24,6 +26,12 @@ public class booking {
     @ManyToOne
     @JoinColumn(name = "CTGID",nullable = false)
     private room room;
+
+    @Column(name = "bcheck_in", nullable = true)
+    private LocalDate BCheckIn;
+
+    @Column(name = "bcheck_out", nullable = true)
+    private LocalDate BCheckOut;
 
     @Column(name = "BDate", nullable = false, updatable = false)
     private LocalDateTime BDate;
@@ -69,6 +77,22 @@ public class booking {
 
     public void setRoom(com.example.bookinghotel.models.room room) {
         this.room = room;
+    }
+
+    public LocalDate getBCheckIn() {
+        return BCheckIn;
+    }
+
+    public void setBCheckIn(LocalDate BCheckIn) {
+        this.BCheckIn = BCheckIn;
+    }
+
+    public LocalDate getBCheckOut() {
+        return BCheckOut;
+    }
+
+    public void setBCheckOut(LocalDate BCheckOut) {
+        this.BCheckOut = BCheckOut;
     }
 
     public LocalDateTime getBDate() {
