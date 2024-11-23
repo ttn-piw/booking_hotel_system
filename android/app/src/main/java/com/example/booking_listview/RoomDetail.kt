@@ -26,8 +26,10 @@ class RoomDetail : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.room_detail)
 
+        val hidRD = intent.getStringExtra("HID")
         val hotelName = intent.getStringExtra("RHotelName")
         val hotelAddress = intent.getStringExtra("RHotelAddress")
+        val ctgidRD = intent.getStringExtra("CTGID")
         val roomName = intent.getStringExtra("RoomName")
         val roomStar = intent.getStringExtra("RoomStar")
         val roomDes = intent.getStringExtra("RoomDes")
@@ -38,6 +40,7 @@ class RoomDetail : AppCompatActivity() {
 
         Log.d("RoomImgDT",roomImage.toString());
         Log.d("HotelIMG",hotelImage.toString());
+        Log.d("PRICE", roomPrice.toString())
 
         val imgRoomDetail = findViewById<LinearLayout>(R.id.imgRoomDetail)
         val txtRoomDetail = findViewById<TextView>(id.txtRoomName)
@@ -45,6 +48,9 @@ class RoomDetail : AppCompatActivity() {
         val txtStarDetail = findViewById<TextView>(id.txtStarDetail)
         val txtPriceDetail = findViewById<TextView>(id.txtPriceDetail)
         val txtRoomDescription = findViewById<TextView>(R.id.txtRDescription);
+
+        val roomPrice_int = roomPrice?.toInt()
+        Log.d("PRICE_INT", roomPrice_int.toString())
 
         txtRoomDetail.text = "$roomName Room"
         txtRHotelName.text = hotelName
@@ -60,6 +66,7 @@ class RoomDetail : AppCompatActivity() {
         var checkInDate: Date? = null
         var checkOutDate: Date? = null
         var daysBetween: Long = 0
+        var totalMoney: Long = 0
 
         txtCheckInDate.setOnClickListener {
             showDatePicker { date ->
@@ -73,14 +80,19 @@ class RoomDetail : AppCompatActivity() {
                 txtCheckOutDate.text = date
                 checkOutDate = parseDate(date)
 
-                checkInDate?.let {
-                    checkOutDate?.let {
-                        daysBetween = calculateDaysBetween(it, checkOutDate!!)
-                        Log.d("DAYS: ",daysBetween.toString())
+                checkInDate?.let { startDate ->
+                    checkOutDate?.let { endDate ->
+                        daysBetween = calculateDaysBetween(startDate, endDate)
+                        Log.d("DAYS: ", "Days Between: $daysBetween")
+                        if (roomPrice_int != null) {
+                            totalMoney = daysBetween * roomPrice_int.toInt()
+                            Log.d("TOTAL", totalMoney.toString())
+                        }
                     }
                 }
             }
         }
+
 
 ////////////////////////////////////////////////////////////////////////////
         val btnAddToWishList = findViewById<ImageView>(R.id.btnAddToWishList)
@@ -95,7 +107,9 @@ class RoomDetail : AppCompatActivity() {
             val checkOutDateString = txtCheckOutDate.text.toString()
 
             val intent = Intent(this, Payment::class.java)
-            intent.putExtra("BookedDate", daysBetween)
+            intent.putExtra("HID_RD", hidRD)
+            intent.putExtra("CTGID_RD", ctgidRD)
+            intent.putExtra("TotalMoney", totalMoney.toString())
             intent.putExtra("HotelNamePM", hotelName)
             intent.putExtra("HotelAddressPM", hotelAddress)
             intent.putExtra("HotelImgPM", hotelImage)

@@ -62,8 +62,10 @@ class RvRoomAdapter(
             imgRoom.setOnClickListener {
                 val context = it.context
                 val intent = Intent(context, RoomDetail::class.java)
+                intent.putExtra("CTGID", room.ctgid.toString())
                 intent.putExtra("RoomName", room.ctgname)
                 intent.putExtra("RHotelAddress", room.ctghid.haddress)
+                intent.putExtra("HID",room.ctghid.hid.toString())
                 intent.putExtra("HotelImg", hotelImg)
                 intent.putExtra("RoomStar", room.ctgstar)
                 intent.putExtra("RoomDes", room.ctgdes)
