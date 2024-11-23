@@ -9,11 +9,19 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.booking_listview.R.id
+import com.example.booking_listview.adapter.RvReviewAdapter
+import com.example.booking_listview.adapter.RvRoomHotelIDAdapter
+import com.example.booking_listview.model.Review
+import com.example.booking_listview.model.Room
+import org.json.JSONException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -21,6 +29,10 @@ import java.util.Locale
 
 class RoomDetail : AppCompatActivity() {
     @SuppressLint("WrongViewCast", "MissingInflatedId")
+
+    private lateinit var RvReviewAdapter: RvReviewAdapter
+    private lateinit var rvAvailableReviewList: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -49,7 +61,7 @@ class RoomDetail : AppCompatActivity() {
         val txtPriceDetail = findViewById<TextView>(id.txtPriceDetail)
         val txtRoomDescription = findViewById<TextView>(R.id.txtRDescription);
 
-        val roomPrice_int = roomPrice?.toInt()
+        val roomPrice_int = roomPrice?.toIntOrNull()  // Safe conversion
         Log.d("PRICE_INT", roomPrice_int.toString())
 
         txtRoomDetail.text = "$roomName Room"
@@ -92,6 +104,15 @@ class RoomDetail : AppCompatActivity() {
                 }
             }
         }
+
+        rvAvailableReviewList = findViewById(R.id.rvAvailableReviewList)
+        rvAvailableReviewList.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false,
+        )
+        val parseCTGID = ctgidRD?.toInt()
+        parseCTGID?.toInt()?.let { getReviewsFromCTGID(it) }
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -155,4 +176,51 @@ class RoomDetail : AppCompatActivity() {
         val diffInMillis = endDate.time - startDate.time // mili seconds
         return diffInMillis / (1000 * 60 * 60 * 24)
     }
+
+    private fun getReviewsFromCTGID(ctgid: Int) {
+        Log.d("RV_CTGID", ctgid.toString())
+
+        val queue = Volley.newRequestQueue(this)
+        val url = "http://10.0.2.2:8080/api/reviews/roomId?roomId=$ctgid"
+
+        val jsonRequest = JsonObjectRequest(Request.Method.GET, url, null,
+            { response ->
+                try {
+                    val dataArray = response.getJSONArray("data")
+                    val reviewsList = mutableListOf<Review>()
+
+                    for (i in 0 until dataArray.length()) {
+                        val reviewObj = dataArray.getJSONObject(i)
+
+                        val review = Review(
+                            review_id = reviewObj.getInt("review_id"),
+                            ctgname = reviewObj.getString("CTGName"),
+                            pname = reviewObj.getString("PName"),
+                            rating = reviewObj.getString("rating"),
+                            rating_text = reviewObj.getString("rating_text")
+                        )
+
+                        Log.d("LIST_INFO", review.toString())
+                        Log.d("RID", review.review_id.toString())
+                        Log.d("CTGNAME", review.ctgname)
+                        Log.d("RTEXT", review.rating_text)
+
+                        reviewsList.add(review)
+                    }
+
+
+                    RvReviewAdapter = RvReviewAdapter(reviewsList)
+                    rvAvailableReviewList.adapter = RvReviewAdapter
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            },
+            { error ->
+                error.printStackTrace()
+            })
+
+        queue.add(jsonRequest)
+    }
+
 }

@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvPersonName"
+                android:id="@+id/txtUNameRV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="John Doe"
@@ -28,7 +28,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvRatingScore"
+                android:id="@+id/txtRatingScoreRV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -38,7 +38,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tvRatingText"
+            android:id="@+id/txtRatingTextRV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Great experience! Would highly recommend."
