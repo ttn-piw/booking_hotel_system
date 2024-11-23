@@ -2,6 +2,7 @@ package com.example.bookinghotel.controllers;
 
 import com.example.bookinghotel.models.hotel;
 import com.example.bookinghotel.models.hotelDTO;
+import com.example.bookinghotel.models.room;
 import com.example.bookinghotel.repository.HotelRepository;
 import com.example.bookinghotel.services.HotelsService;
 import jakarta.servlet.http.HttpSession;
@@ -44,11 +45,32 @@ public class HotelsController {
         return "Website/hotels_page.html";
     }
 
+//    @GetMapping("/hotel_detail")
+//    public String showHotelDetailPage(Model model) {
+//        return "Website/hotel_detail.html";
+//    }
+
     @GetMapping("/api")
     @ResponseBody
     public List<hotel> getAllHotelsApi() {
         return hotelsService.getAllHotels();
     }
+
+    @GetMapping("/api/hotelId")
+    @ResponseBody
+    public hotel getHotelByHotelID(@RequestParam("hotel_id") Integer hotelId) {
+        return hotelsService.getHotelByHID(hotelId);
+    }
+
+    @GetMapping("/hotel_detail")
+    public String showHotelDetailPage(@RequestParam("id") Integer id, Model model) {
+        hotel hotel = hotelsService.getHotelByHID(id);
+        if (hotel != null) {
+            model.addAttribute("hotel", hotel);
+        }
+        return "Website/hotel_detail.html";
+    }
+
 
     @GetMapping("/api/bestHotels")
     @ResponseBody

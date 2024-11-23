@@ -172,7 +172,10 @@
                     hotelCard.classList.add('popular__card');
 
                     hotelCard.innerHTML = `
-                    <img src="/images/${hotel.himg}" alt="${hotel.hname}" />
+                    <img src="/images/${hotel.himg}"
+                         alt="${hotel.hname}"
+                         class="hotel-image"
+                         data-id="${hotel.hid}" />
                     <div class="popular__content">
                         <div class="popular__card__header">
                             <h4>${hotel.hname}</h4>
@@ -182,7 +185,15 @@
                     </div>
                 `;
 
+                    // Add to list
                     grid.appendChild(hotelCard);
+                });
+
+                document.querySelectorAll('.hotel-image').forEach(img => {
+                    img.addEventListener('click', (event) => {
+                        const hotelId = event.target.dataset.id;
+                        window.location.href = `hotel_detail?id=${hotelId}`;
+                    });
                 });
             } else {
                 console.error("Expected an array of hotels, but got:", hotels);
@@ -283,7 +294,7 @@
         background-image: linear-gradient(to right,
         rgba(44, 56, 85, 0.9),
         rgba(100, 125, 187, 0.1)),
-        url("assets/header.jpg");
+        url("/images/assets/header2.jpg");
         background-position: center center;
         background-size: cover;
         background-repeat: no-repeat;

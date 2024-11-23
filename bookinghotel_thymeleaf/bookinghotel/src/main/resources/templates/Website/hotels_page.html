@@ -211,7 +211,7 @@ body {
     </footer>
 
     <script>
-        // Example: Fetch hotel data from API
+        //Fetch hotel data from API
         fetch('http://localhost:8080/hotels/api')
             .then(response => response.json())
             .then(hotels => {
@@ -221,7 +221,7 @@ body {
                         const hotelCard = document.createElement('div');
                         hotelCard.classList.add('hotel-card');
                         hotelCard.innerHTML = `
-                            <img src="/images/${hotel.himg}" alt="${hotel.hname}" />
+                            <img src="/images/${hotel.himg}" alt="${hotel.hname}" onclick="goToHotelDetail(${hotel.hid})" />
                             <div class="hotel-info">
                                 <h3>${hotel.hname}</h3>
                                 <p class="price">$${hotel.hstar * 100}</p>
@@ -238,6 +238,10 @@ body {
             .catch(error => {
                 console.error('Error fetching hotel data:', error);
             });
+
+        function goToHotelDetail(hotelId) {
+            window.location.href = `/hotel_detail?id=${hotelId}`;
+        }
     </script>
 </body>
 
