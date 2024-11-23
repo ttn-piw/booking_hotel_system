@@ -208,7 +208,6 @@ class RoomDetail : AppCompatActivity() {
                         reviewsList.add(review)
                     }
 
-
                     RvReviewAdapter = RvReviewAdapter(reviewsList)
                     rvAvailableReviewList.adapter = RvReviewAdapter
 

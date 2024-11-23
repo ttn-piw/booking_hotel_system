@@ -11,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BookingsService {
@@ -39,7 +38,7 @@ public class BookingsService {
 
     @Transactional
     public List<booking> getBookingsByPID(Integer id){
-        String getBookingsByPID = "SELECT b FROM booking b WHERE b.person.PID = "+id;
+        String getBookingsByPID = "SELECT b.hotel.HName, b.room.CTGName, b.BMoney, b.BCheckIn,b.BCheckOut FROM booking b WHERE b.person.PID = "+id;
         return entityManager.createQuery(getBookingsByPID).getResultList();
     }
 
@@ -60,9 +59,10 @@ public class BookingsService {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            throw e;  // Log exception for better debugging
+            throw e;
         }
     }
+
 
 
 }

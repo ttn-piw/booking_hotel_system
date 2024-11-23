@@ -3,7 +3,9 @@ package com.example.booking_listview
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -62,6 +64,12 @@ class Mainpage : AppCompatActivity() {
         )
 
         fetchBestRooms()
+
+        val btnBooked = findViewById<ImageView>(R.id.btnBookedRooms)
+        btnBooked.setOnClickListener{
+            val intent = Intent(this,Booked_page::class.java)
+            startActivity(intent);
+        }
     }
 
     private fun fetchBestHotels() {

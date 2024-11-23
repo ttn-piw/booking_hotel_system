@@ -7,13 +7,11 @@ import android.os.Looper
 import android.util.Log
 import android.widget.AdapterView
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.booking_listview.R.*
-import com.example.booking_listview.R.id.imgRoom
 
 class MainActivity : AppCompatActivity() {
     lateinit var customeAdapter_var: CustomeAdapter
@@ -41,9 +39,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val btnTestRoom = findViewById<Button>(id.btnTestRoom)
+        val btnTestRoom = findViewById<Button>(id.btnTestBP)
         btnTestRoom.setOnClickListener{
-           val intent = Intent(this,RoomDetail::class.java)
+//            Toast.makeText(this, "Click button", Toast.LENGTH_SHORT).show()
+           val intent = Intent(this, Booked_page::class.java)
             startActivity(intent)
         }
 

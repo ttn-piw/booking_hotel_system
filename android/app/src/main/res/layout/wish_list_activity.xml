@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".WishList">
 
-    <!-- Tiêu đề -->
     <TextView
         android:id="@+id/tvWishlistTitle"
         android:layout_width="wrap_content"
