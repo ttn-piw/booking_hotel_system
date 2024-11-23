@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,22 +46,23 @@ public class BookingsService {
     @Transactional
     public Boolean bookedRoom(Integer pid, Integer ctgid, Integer hid, String money, LocalDate checkInDate, LocalDate checkOutDate) {
         String booked = "INSERT INTO booking (pid, hid, ctgid, bdate, bmoney, bpay, bcheck_in, bcheck_out) " +
-                "VALUES (:pid, :hid, :ctgid, :bdate, :money, 0,:bcheck_in, :bcheck_out)";
+                "VALUES (:pid, :hid, :ctgid, :bdate, :money, 0, :bcheck_in, :bcheck_out)";
         try {
             entityManager.createNativeQuery(booked)
                     .setParameter("pid", pid)
                     .setParameter("hid", hid)
                     .setParameter("ctgid", ctgid)
                     .setParameter("bdate", LocalDateTime.now())
-                    .setParameter("money", money)
+                    .setParameter("money", new BigDecimal(money))
                     .setParameter("bcheck_in", checkInDate)
                     .setParameter("bcheck_out", checkOutDate)
                     .executeUpdate();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            throw e;
+            throw e;  // Log exception for better debugging
         }
     }
+
 
 }

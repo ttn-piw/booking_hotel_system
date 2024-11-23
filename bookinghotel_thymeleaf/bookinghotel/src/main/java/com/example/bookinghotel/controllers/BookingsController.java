@@ -3,6 +3,7 @@ package com.example.bookinghotel.controllers;
 import com.example.bookinghotel.models.booking;
 import com.example.bookinghotel.services.BookingsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -50,8 +51,8 @@ public class BookingsController {
                                              @RequestParam("ctgid") int ctgid,
                                              @RequestParam("hid") int hid,
                                              @RequestParam("money") String money,
-                                             @RequestParam("checkInDate") LocalDate checkInDate,
-                                             @RequestParam("checkOutDate") LocalDate checkOutDate) {
+                                             @RequestParam("checkInDate") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate checkInDate,
+                                             @RequestParam("checkOutDate") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate checkOutDate) {
         Boolean booked = bookingsService.bookedRoom(pid, ctgid, hid, money, checkInDate, checkOutDate);
         if (booked) {
             return ResponseEntity.ok("Booking successfully!");
@@ -59,6 +60,5 @@ public class BookingsController {
             return ResponseEntity.notFound().build();
         }
     }
-
 
 }
