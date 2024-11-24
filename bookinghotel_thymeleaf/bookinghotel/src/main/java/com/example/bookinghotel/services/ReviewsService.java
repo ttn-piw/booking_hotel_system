@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +48,12 @@ public class ReviewsService {
         response.put("data", data);
 
         return response;
+    }
+
+    @Transactional
+    public List<review> getBestReviewsService() {
+        String query = "SELECT p.PName,r.rating_text FROM review r JOIN person p ON r.person.PID = p.ID WHERE r.rating = 5";
+        return (List<review>) entityManager.createQuery(query).getResultList();
     }
 
 }

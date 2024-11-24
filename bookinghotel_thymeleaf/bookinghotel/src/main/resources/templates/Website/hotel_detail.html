@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
-    <title>Hotel Detail | WDM&Co</title>
+    <title>Hotel Detail</title>
 </head>
 
 <body>
     <nav>
-        <div class="nav__logo">WDM&Co</div>
+        <div class="nav__logo">TNEcoHotel</div>
         <ul class="nav__links">
-            <li class="link"><a href="index.html">Home</a></li>
+            <li class="link"><a href="http://localhost:8080/hotels/home">Home</a></li>
             <li class="link"><a href="#">Book</a></li>
-            <li class="link"><a href="#">Blog</a></li>
             <li class="link"><a href="#">Contact Us</a></li>
+            <li class="link"><a href="#">Account</a></li>
         </ul>
     </nav>
 
@@ -46,9 +46,9 @@
     <footer class="footer">
         <div class="section__container footer__container">
             <div class="footer__col">
-                <h3>WDM&Co</h3>
-                <p>WDM&Co is a premier hotel booking website that offers a seamless and convenient way to find and book
-                    accommodations worldwide.</p>
+                <h3>TNEcoHotel</h3>
+                <p>TNEcoHotel is a premier hotel booking platform designed for both apps and websites, offering a seamless and convenient
+            way to search and book accommodations worldwide.</p>
             </div>
             <div class="footer__col">
                 <h4>Company</h4>
@@ -92,21 +92,25 @@
             .then(response => response.json())
             .then(rooms => {
                 const roomContainer = document.getElementById('roomContainer');
-                roomContainer.innerHTML = ''; // Clear existing rooms
+                roomContainer.innerHTML = '';
 
                 rooms.forEach(room => {
                     const roomCard = document.createElement('div');
                     roomCard.className = 'room-card';
                     roomCard.innerHTML = `
-                <img src="/images/${room.ctgimg}" alt="${room.ctgname}" class="room-image" />
-                <div class="room-info">
-                    <h3>${room.ctgname}</h3>
-                    <p>${room.ctgdescription}</p>
-                    <p><strong>Price:</strong> $${room.ctgprice}/night</p>
-                    <p><strong>Available:</strong> ${room.ctgremain}/${room.ctgquantity}</p>
-                    <button class="btn">Book Now</button>
-                </div>
-            `;
+                        <img src="/images/${room.ctgimg}" alt="${room.ctgname}" class="room-image" />
+                        <div class="room-info">
+                            <h3>${room.ctgname}</h3>
+                            <p>${room.ctgdescription}</p>
+                            <p><strong>Price:</strong> $${room.ctgprice}/night</p>
+                            <p><strong>Available:</strong> ${room.ctgremain}/${room.ctgquantity}</p>
+                            ${room.ctgremain > 0
+                                ? '<button class="btn">Book Now</button>'
+                                : '' 
+                            }  
+                        </div>
+                    `;
+
                     roomContainer.appendChild(roomCard);
                 });
             })
@@ -145,40 +149,35 @@
     }
 
     /* NAVIGATION BAR */
-    .nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 2rem;
-        background-color: var(--white);
-        box-shadow: 0 2px 5px var(--shadow-color);
-        border-radius: 10px;
+   nav {
         max-width: var(--max-width);
         margin: auto;
+        padding: 2rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .nav__logo {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        cursor: pointer;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-dark);
     }
 
     .nav__links {
         list-style: none;
         display: flex;
         align-items: center;
-        gap: 1.5rem;
+        gap: 2rem;
     }
-
-    .nav__links .link a {
-        text-decoration: none;
-        color: var(--text-light);
+    .link a {
         font-weight: 500;
-        transition: color 0.3s ease-in-out;
+        color: var(--text-light);
+        transition: 0.3s;
+        text-decoration: none;
     }
 
-    .nav__links .link a:hover {
+    .link a:hover {
         color: var(--primary-color);
     }
 
