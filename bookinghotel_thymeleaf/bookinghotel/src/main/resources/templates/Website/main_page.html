@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href= />
-    <title>Web Design Mastery | WDM&Co</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <title>Main page</title>
 </head>
-
 <body>
 <nav>
     <div class="nav__logo">TNEcoHotel</div>
@@ -17,7 +17,15 @@
         <li class="link"><a href="#">Book</a></li>
         <li class="link"><a href="/hotels/home/hotels">Hotel</a></li>
         <li class="link"><a href="#">Contact Us</a></li>
-        <li class="link"><a href="#">Account</a></li>
+        <li class="link">
+            <a href="#">Account</a>
+            <ul class="dropdown_menu">
+                <li><a href="#">Information</a></li>
+                <li><a href="#">Wishlist</a></li>
+                <li><a href="#">Booked</a></li>
+                <li><a href="#">Log out</a></li>
+            </ul>
+        </li>
     </ul>
 </nav>
 <header class="section__container header__container">
@@ -107,6 +115,10 @@
     </div>
 </section>
 
+<section class="map__container">
+    <div id="map" class="map"></div>
+</section>
+
 <footer class="footer">
     <div class="section__container footer__container">
         <div class="footer__col">
@@ -144,7 +156,21 @@
         Copyright © 2023 Web Design Mastery. All rights reserved.
     </div>
 </footer>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNI_ZWPqvdS6r6gPVO50I4TlYkfkZdXh8"></script>
+<script>
+    function initMap() {
+        const location = { lat: 10.030009, lng: 105.7699716 };
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 15,
+            center: location,
+        });
+        new google.maps.Marker({
+            position: location,
+            map: map,
+        });
+    }
+    window.onload = initMap;
+</script>
 <script>
     document.getElementById('btnHomeSignUp').addEventListener('click', function() {
         window.location.href = '/registerPage.html';
@@ -168,7 +194,10 @@
                     <div class="popular__content">
                         <div class="popular__card__header">
                             <h4>${hotel.hname}</h4>
-                            <h4>$${hotel.hstar * 100}</h4>
+                            <h4>
+                                ${hotel.hstar}
+                                <i class="fa-solid fa-star"></i>
+                            </h4>
                         </div>
                         <p>${hotel.haddress}</p>
                     </div>
@@ -199,7 +228,8 @@
                 }
                 const data = await response.json();
                 const clientGrid = document.getElementById("client-grid");
-
+                let client_img = 1;
+                                    
                 clientGrid.innerHTML = "";
 
                 data.forEach((review) => {
@@ -207,13 +237,14 @@
 
                     const card = document.createElement("div");
                     card.classList.add("client__card");
-
+                    
                     card.innerHTML = `
-                    <img src="/images/assets/client-1.jpg" alt="client" />
+                    <img src="/images/assets/client-${client_img}.jpg" alt="client" />
                     <p><strong>${name}:</strong> ${rating}</p>
                 `;
 
                     clientGrid.appendChild(card);
+                    client_img = client_img + 1;
                 });
             } catch (error) {
                 console.error("Error loading reviews:", error);
@@ -286,10 +317,63 @@
     }
 
     .nav__links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+    .nav__links .link {
+        position: relative; 
+    }
+
+    .nav__links a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        font-size: 16px;
+        transition: color 0.3s ease; 
+    }
+
+    .dropdown_menu {
+        display: none;
+        position: absolute;
+        left: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px; 
         list-style: none;
-        display: flex;
-        align-items: center;
-        gap: 2rem;
+        padding: 10px 0;
+        min-width: 170px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+        z-index: 10;
+        opacity: 0; 
+        transform: translateY(-10px); 
+        transition: all 0.3s ease;
+    }
+
+    .dropdown_menu li {
+        padding: 10px 20px;
+        transition: background-color 0.3s ease; 
+    }
+
+    .dropdown_menu li a {
+        color: #333;
+        font-size: 14px;
+        display: block;
+    }
+
+    .dropdown_menu li:hover {
+        background-color: #f8f9fa; 
+    }
+
+    .dropdown_menu li a:hover {
+        color: #007bff;
+    }
+
+    .link:hover .dropdown_menu {
+        display: block;
+        opacity: 1; 
+        transform: translateY(0); 
     }
 
     .link a {
@@ -301,7 +385,7 @@
     .link a:hover {
         color: var(--primary-color);
     }
-
+  
     .header__container {
         padding: 1rem 1rem 5rem 1rem;
     }
@@ -586,6 +670,17 @@
 
     .reward__btn:hover {
         background-color: var(--primary-color-dark);
+    }
+
+    .map__container {
+        width: 100%;
+        height: 400px;
+        margin-bottom: 20px;
+    }
+
+    .map {
+        width: 100%;
+        height: 100%;
     }
 
     .footer {

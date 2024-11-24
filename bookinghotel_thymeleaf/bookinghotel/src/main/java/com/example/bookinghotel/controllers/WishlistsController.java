@@ -7,11 +7,13 @@ import com.example.bookinghotel.services.WishlistsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/wishlist")
 public class WishlistsController {
     @Autowired
@@ -23,6 +25,11 @@ public class WishlistsController {
         return wishlistsService.getWishlistByEmail(personEmail);
     }
 
+    @GetMapping("/wishlistPage")
+    public String showWishlistsPage(Model model) {
+        return "Website/wishlist.html";
+    }
+    
     @PostMapping("/addToWishlist")
     @ResponseBody
     public ResponseEntity<String> addToWishlist(@RequestParam("pid") int pid, @RequestParam("ctgid") int ctgid) {
@@ -36,7 +43,7 @@ public class WishlistsController {
 
     @PostMapping("/deleteFromWishList")
     @ResponseBody
-    public ResponseEntity<String> deleteFromWishLish(@RequestParam("pid") int pid, @RequestParam("ctgid") int ctgid) {
+    public ResponseEntity<String> deleteFromWishList(@RequestParam("pid") int pid, @RequestParam("ctgid") int ctgid) {
         boolean deleted = wishlistsService.deleteFromWishList(pid,ctgid);
         if (deleted) {
             return ResponseEntity.ok("Deleted from wishlist successfully!!");
