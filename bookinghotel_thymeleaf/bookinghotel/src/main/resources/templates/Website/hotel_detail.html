@@ -14,9 +14,18 @@
         <div class="nav__logo">TNEcoHotel</div>
         <ul class="nav__links">
             <li class="link"><a href="http://localhost:8080/hotels/home">Home</a></li>
-            <li class="link"><a href="#">Book</a></li>
-            <li class="link"><a href="#">Contact Us</a></li>
-            <li class="link"><a href="#">Account</a></li>
+            <li class="link"><a href="#">Hotel</a></li>
+            <li class="link"><a href="#">About Us</a></li>
+            <li class="link">
+                <a id="UEmail" th:text="${userEmail != null ? userEmail : 'Account'}"></a>
+                <ul class="dropdown_menu">
+                    <li><a href="#">Information</a></li>
+                    <li><a href="#">Wishlist</a></li>
+                    <li><a href="#">Booked</a></li>
+                    <li><a href="http://localhost:8080/api/v1/user/logout">Log out</a></li>
+                    <li id="PID"><a th:text="${userId}"></a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
 
@@ -92,9 +101,12 @@
             .catch(error => console.error('Error fetching hotel details:', error));
 
         // Fetch list rooms
+        let rooms = [];
         fetch(`http://localhost:8080/rooms/hotelId?hotel_id=${hotelId}`)
             .then(response => response.json())
-            .then(rooms => {
+            .then(data => {
+                rooms = data;
+                console.log("Rooms", rooms)
                 const roomContainer = document.getElementById('roomContainer');
                 roomContainer.innerHTML = ''; // Clear previous room list
 
@@ -109,7 +121,7 @@
                     <p><strong>Price:</strong> $${room.ctgprice}/night</p>
                     <p><strong>Available:</strong> ${room.ctgremain}/${room.ctgquantity}</p>
                     ${room.ctgremain > 0
-                        ? '<button class="btn">Book Now</button>'
+                        ? `<button class="btn" onclick="showBookingForm('${room.ctgid}', '${room.ctgname}', '${room.ctgimg}', '${room.ctgprice}', ${hotelId})">Book Now</button>`
                         : ''
                     }
                 </div>
@@ -118,6 +130,117 @@
                 });
             })
             .catch(error => console.error('Error fetching room details:', error));
+        
+        function showBookingForm(roomId, roomName, roomImg, roomPrice, hotelId) {
+            console.log("HotelId form:", hotelId);
+
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+
+            const form = document.createElement('div');
+            form.className = 'booking-form';
+            form.innerHTML = `
+            <form>
+                <h2>Booking Room</h2>
+                <img src="/images/${roomImg}" alt="${roomName}" width="400px"/>
+                <p>Type: ${roomName}</p>
+                <label for="checkin">Check-in:</label>
+                <input type="date" id="checkin" required>
+                <label for="checkout">Check-out:</label>
+                <input type="date" id="checkout" required>
+                <p><strong>Total Price:</strong> $<span id="totalPrice">0</span></p>
+                <button type="submit">Book now !</button>
+                <button type="button" id="closeForm">Back</button>
+            </form>
+            `;
+
+            document.body.appendChild(overlay);
+            document.body.appendChild(form);
+
+            form.style.top = `${window.innerHeight / 2 - form.offsetHeight / 2}px`;
+            form.style.left = `${window.innerWidth / 2 - form.offsetWidth / 2}px`;
+
+            const checkinInput = form.querySelector('#checkin');
+            const checkoutInput = form.querySelector('#checkout');
+            const totalPriceElement = form.querySelector('#totalPrice');
+
+            function calculateTotalPrice() {
+                const checkinDate = new Date(checkinInput.value);
+                const checkoutDate = new Date(checkoutInput.value);
+
+                if (checkinDate && checkoutDate && checkoutDate > checkinDate) {
+                    const time = Math.abs(checkoutDate - checkinDate);
+                    const days = Math.ceil(time / (1000 * 60 * 60 * 24));
+                    const totalPrice = days * roomPrice;
+                    totalPriceElement.textContent = totalPrice;
+                } else {
+                    totalPriceElement.textContent = '0';
+                }
+            }
+
+            checkinInput.addEventListener('change', calculateTotalPrice);
+            checkoutInput.addEventListener('change', calculateTotalPrice);
+
+            document.getElementById('closeForm').addEventListener('click', () => {
+                document.body.removeChild(overlay);
+                document.body.removeChild(form);
+            });
+
+            form.querySelector('form').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const checkinDate = checkinInput.value;
+                const checkoutDate = checkoutInput.value;
+                const totalPrice = totalPriceElement.textContent;
+
+                const userEmail = document.getElementById('UEmail').textContent.trim();
+                console.log("Email:", userEmail)
+
+                console.log("CTGID:", roomId);
+                console.log("Money", totalPrice);
+                console.log("Check-in:", checkinDate)
+                console.log("Check-out:", checkoutDate)
+
+                fetch(`http://localhost:8080/persons/getPID/personEmail?personEmail=${userEmail}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const userId = data[0][0];
+                        console.log("UserId:", userId);
+
+                        fetch('http://localhost:8080/bookings/booked', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: new URLSearchParams({
+                                pid: userId,
+                                ctgid: roomId,
+                                hid: hotelId,
+                                money: totalPrice,
+                                checkInDate: checkinDate,
+                                checkOutDate: checkoutDate
+                            })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log("booking_data:", data);
+                                alert('Booking successful!');
+                                document.body.removeChild(overlay);
+                                document.body.removeChild(form);
+                            })
+                            .catch(error => {
+                                console.error('Error booking room:', error);
+                                alert('Booking successful!');
+                                document.body.removeChild(overlay);
+                                document.body.removeChild(form);
+                            });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching userId:', error);
+                        alert('There was an issue fetching your user details. Please try again.');
+                    });
+            });
+        }
 
         function fetchReviews(hotelId) {
             fetch(`http://localhost:8080/api/reviews/hotelId?hotelId=${hotelId}`)
@@ -183,7 +306,10 @@
     }
 
     /* NAVIGATION BAR */
-   nav {
+  #PID{
+      display: none;
+  }
+  nav {
         max-width: var(--max-width);
         margin: auto;
         padding: 2rem 1rem;
@@ -199,11 +325,65 @@
     }
 
     .nav__links {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        gap: 2rem;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+    .nav__links .link {
+        position: relative; 
     }
+
+    .nav__links a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        font-size: 16px;
+        transition: color 0.3s ease; 
+    }
+
+    .dropdown_menu {
+        display: none;
+        position: absolute;
+        left: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        list-style: none;
+        padding: 10px 0;
+        min-width: 170px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        opacity: 0;
+        transform: translateY(-30px);
+        transition: all 0.3s ease;
+    }
+
+    .dropdown_menu li {
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown_menu li a {
+        color: #333;
+        font-size: 14px;
+        display: block;
+    }
+
+    .dropdown_menu li:hover {
+        background-color: #f8f9fa;
+    }
+
+    .dropdown_menu li a:hover {
+        color: #007bff;
+    }
+
+    .link:hover .dropdown_menu {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
     .link a {
         font-weight: 500;
         color: var(--text-light);
@@ -485,5 +665,78 @@
         font-size: 0.9rem;
         margin-top: 2rem;
         border-radius: 10px;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /
+        z-index: 10;
+    }
+
+    .booking-form {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(10%, -20%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        z-index: 11;
+        width: 500px;
+    }
+
+    .booking-form form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .booking-form label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    .booking-form input {
+        margin-top: 5px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .booking-form button {
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .booking-form button#closeForm {
+        background-color: #dc3545;
+    }
+    .form-room-image {
+        width: 110%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .booking-form form label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    .booking-form form input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
 </style>

@@ -47,12 +47,12 @@ public class BookingsController {
     }
 
     @PostMapping("/booked")
-    public ResponseEntity<String> bookedRoom(@RequestParam("pid") int pid,
-                                             @RequestParam("ctgid") int ctgid,
-                                             @RequestParam("hid") int hid,
-                                             @RequestParam("money") String money,
-                                             @RequestParam("checkInDate") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate checkInDate,
-                                             @RequestParam("checkOutDate") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate checkOutDate) {
+    public ResponseEntity<String> bookedRoom( @RequestParam("pid") Integer pid,  // Thay đổi từ int sang Integer
+                                              @RequestParam("ctgid") Integer ctgid,
+                                              @RequestParam("hid") Integer hid,
+                                              @RequestParam("money") String money,
+                                              @RequestParam("checkInDate") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate checkInDate,
+                                              @RequestParam("checkOutDate") @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate checkOutDate) {
         Boolean booked = bookingsService.bookedRoom(pid, ctgid, hid, money, checkInDate, checkOutDate);
         if (booked) {
             return ResponseEntity.ok("Booking successfully!");

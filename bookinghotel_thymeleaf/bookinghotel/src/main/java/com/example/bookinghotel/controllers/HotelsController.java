@@ -65,10 +65,14 @@ public class HotelsController {
     }
 
     @GetMapping("/hotel_detail")
-    public String showHotelDetailPage(@RequestParam("id") Integer id, Model model) {
+    public String showHotelDetailPage(HttpSession session,@RequestParam("id") Integer id, Model model) {
+        String userEmail = (String) session.getAttribute("userEmail");
+        Integer userPID = (Integer) session.getAttribute("userId");
         hotel hotel = hotelsService.getHotelByHID(id);
         if (hotel != null) {
             model.addAttribute("hotel", hotel);
+            model.addAttribute("userEmail", userEmail);
+            model.addAttribute("userId", userPID);
         }
         return "Website/hotel_detail.html";
     }
