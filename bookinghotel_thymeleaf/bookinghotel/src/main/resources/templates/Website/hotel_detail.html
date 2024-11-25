@@ -42,6 +42,11 @@
         <div id="roomContainer" class="room-grid"></div>
     </section>
 
+    <section class="reviews-container">
+        <h2>Customer Reviews</h2>
+        <div id="reviewsContainer" class="reviews-grid"></div>
+    </section>
+
 
     <footer class="footer">
         <div class="section__container footer__container">
@@ -70,12 +75,11 @@
     </footer>
 
     <script>
-        // Extract hotel ID from URL
+        //Take hotel_id from URL
         const urlParams = new URLSearchParams(window.location.search);
         const hotelId = urlParams.get('id');
 
-        // Fetch hotel details
-        // Fetch hotel details (giữ nguyên)
+        // Fetch hotels
         fetch(`http://localhost:8080/hotels/api/hotelId?hotel_id=${hotelId}`)
             .then(response => response.json())
             .then(hotel => {
@@ -87,35 +91,65 @@
             })
             .catch(error => console.error('Error fetching hotel details:', error));
 
-        // Fetch room list
+        // Fetch list rooms
         fetch(`http://localhost:8080/rooms/hotelId?hotel_id=${hotelId}`)
             .then(response => response.json())
             .then(rooms => {
                 const roomContainer = document.getElementById('roomContainer');
-                roomContainer.innerHTML = '';
+                roomContainer.innerHTML = ''; // Clear previous room list
 
                 rooms.forEach(room => {
                     const roomCard = document.createElement('div');
                     roomCard.className = 'room-card';
                     roomCard.innerHTML = `
-                        <img src="/images/${room.ctgimg}" alt="${room.ctgname}" class="room-image" />
-                        <div class="room-info">
-                            <h3>${room.ctgname}</h3>
-                            <p>${room.ctgdescription}</p>
-                            <p><strong>Price:</strong> $${room.ctgprice}/night</p>
-                            <p><strong>Available:</strong> ${room.ctgremain}/${room.ctgquantity}</p>
-                            ${room.ctgremain > 0
-                                ? '<button class="btn">Book Now</button>'
-                                : '' 
-                            }  
-                        </div>
-                    `;
-
+                <img src="/images/${room.ctgimg}" alt="${room.ctgname}" class="room-image" />
+                <div class="room-info">
+                    <h3>${room.ctgname}</h3>
+                    <p>${room.ctgdescription}</p>
+                    <p><strong>Price:</strong> $${room.ctgprice}/night</p>
+                    <p><strong>Available:</strong> ${room.ctgremain}/${room.ctgquantity}</p>
+                    ${room.ctgremain > 0
+                        ? '<button class="btn">Book Now</button>'
+                        : ''
+                    }
+                </div>
+            `;
                     roomContainer.appendChild(roomCard);
                 });
             })
             .catch(error => console.error('Error fetching room details:', error));
 
+        function fetchReviews(hotelId) {
+            fetch(`http://localhost:8080/api/reviews/hotelId?hotelId=${hotelId}`)
+                .then(response => response.json())
+                .then(reviews => {
+                    console.log('Reviews Data:', reviews);
+                    const reviewsContainer = document.getElementById('reviewsContainer');
+                    reviewsContainer.innerHTML = '';
+
+                    if (reviews && Array.isArray(reviews)) {
+                        reviews.forEach(review => {
+                            const [rating, comment, category, customerName] = review; //column_name
+
+                            const reviewCard = document.createElement('div');
+                            reviewCard.className = 'review-card';
+                            reviewCard.innerHTML = `
+                        <div class="review-info">
+                            <h3>${customerName || "Anonymous"}</h3>
+                            <p class="rating">Rating: ${rating || "N/A"} ★</p>
+                            <p class="category">Category: ${category || "Unknown"}</p>
+                            <p>${comment || "No comment"}</p>
+                        </div>
+                    `;
+                            reviewsContainer.appendChild(reviewCard);
+                        });
+                    } else {
+                        console.error('Error when fetch reviews');
+                    }
+                })
+                .catch(error => console.error('Error fetching reviews:', error));
+        }
+        fetchReviews(hotelId);
     </script>
 </body>
 
@@ -321,6 +355,98 @@
     .room-info .btn:hover {
         background-color: var(--accent-color);
         transform: translateY(-3px);
+    }
+
+    .reviews-container {
+        padding: 40px 20px;
+        background-color: #f8f8f8;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+    .reviews-container h2 {
+        font-size: 2rem;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .reviews-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        justify-content: center;
+    }
+
+    /* Card review */
+    .review-card {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .review-header {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-bottom: 2px solid #e1e1e1;
+    }
+
+    .review-header img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 15px;
+    }
+
+    .review-header h3 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+        margin: 0;
+    }
+
+    .rating {
+        margin-top: 5px;
+        color: #f39c12;
+        font-size: 1rem;
+    }
+
+    .category {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+    }
+
+    .review-body {
+        padding: 20px;
+        font-size: 1rem;
+        color: #555;
+        line-height: 1.5;
+    }
+
+    .review-body p.no-comment {
+        color: #ccc;
+        font-style: italic;
+    }
+
+    .no-reviews {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #888;
+        font-style: italic;
     }
 
     /* FOOTER */

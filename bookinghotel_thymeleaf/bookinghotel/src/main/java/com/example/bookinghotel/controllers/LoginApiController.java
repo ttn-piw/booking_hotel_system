@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("api/v1")
@@ -24,10 +25,12 @@ public class LoginApiController {
         } else {
             Integer userId = usersService.getUserIdByEmail(email);
             System.out.println("USER_ID: "+userId);
+            System.out.println("EMAIL: "+email);
 
             httpSession.setAttribute("userRole", role);
             httpSession.setAttribute("isLoggedIn", true);
             httpSession.setAttribute("userId", userId); // Lưu userId vào session
+            httpSession.setAttribute("userEmail", email);
 
             if (role.equals("admin")) {
                 return new ResponseEntity<>("Go to admin page", HttpStatus.OK);
@@ -37,12 +40,9 @@ public class LoginApiController {
         }
     }
 
-    @PostMapping("users/logout")
-    public ResponseEntity<String> logoutUser(HttpSession httpSession) {
-        Integer userId = (Integer) httpSession.getAttribute("userId");
-        System.out.println("USER_ID before log_out: "+userId);
-        httpSession.invalidate();
-        System.out.println("USER_ID after destroy session: "+userId);
-        return new ResponseEntity<>("Log out successfully!", HttpStatus.OK);
+    @GetMapping("user/logout")
+    public RedirectView logout(HttpSession session) {
+        session.invalidate();
+        return new RedirectView("/index.html");
     }
 }

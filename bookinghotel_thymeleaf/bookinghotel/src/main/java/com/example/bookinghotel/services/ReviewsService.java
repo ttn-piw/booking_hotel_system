@@ -56,4 +56,12 @@ public class ReviewsService {
         return (List<review>) entityManager.createQuery(query).getResultList();
     }
 
+    @Transactional
+    public List<review> getReviewsByHID(Integer HID) {
+        String query =  "SELECT rv.rating, rv.rating_text, r.CTGName, rv.person.PName FROM review rv " +
+                        "JOIN rv.room r " +
+                        "JOIN rv.person p " +
+                        "WHERE rv.room.hotels.HID = :HID";
+        return entityManager.createQuery(query).setParameter("HID", HID).getResultList();
+    }
 }

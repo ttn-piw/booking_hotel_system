@@ -18,12 +18,12 @@
         <li class="link"><a href="/hotels/home/hotels">Hotel</a></li>
         <li class="link"><a href="#">Contact Us</a></li>
         <li class="link">
-            <a href="#">Account</a>
+            <a th:text="${userEmail != null ? userEmail : 'Account'}"></a>
             <ul class="dropdown_menu">
                 <li><a href="#">Information</a></li>
                 <li><a href="#">Wishlist</a></li>
                 <li><a href="#">Booked</a></li>
-                <li><a href="#">Log out</a></li>
+                <li><a href="http://localhost:8080/api/v1/user/logout">Log out</a></li>
             </ul>
         </li>
     </ul>

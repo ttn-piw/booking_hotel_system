@@ -36,7 +36,9 @@ public class HotelsController {
     }
 
     @GetMapping("/home")
-    public String showHomePage(Model model) {
+    public String showHomePage(HttpSession session,Model model) {
+        String userEmail = (String) session.getAttribute("userEmail");
+        model.addAttribute("userEmail", userEmail);
         return "Website/main_page.html";
     }
 

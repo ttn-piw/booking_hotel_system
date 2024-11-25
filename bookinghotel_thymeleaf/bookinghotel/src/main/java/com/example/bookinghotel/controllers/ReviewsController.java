@@ -32,6 +32,12 @@ public class ReviewsController {
         return reviewsService.getReviewsByRID(roomId);
     }
 
+    @GetMapping("/hotelId")
+    @ResponseBody
+    public List<review> getReviewsByHID(@RequestParam("hotelId") int hotelId) {
+        return reviewsService.getReviewsByHID(hotelId);
+    }
+
     @GetMapping("/bestReviews")
     @ResponseBody
     public List<review> getBestReviews() {
