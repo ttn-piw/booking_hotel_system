@@ -9,102 +9,101 @@
 </head>
 
 <body>
+    <nav>
+        <div class="nav__logo">TNEcoHotel</div>
+        <ul class="nav__links">
+            <li class="link"><a href="http://localhost:8080/hotels/home">Home</a></li>
+            <li class="link"><a href="#">Hotel</a></li>
+            <li class="link"><a href="#">About Us</a></li>
+            <li class="link">
+                <a id="UEmail" th:text="${userEmail != null ? userEmail : 'Account'}"></a>
+                <ul class="dropdown_menu">
+                    <li><a href="#">Information</a></li>
+                    <li><a href="http://localhost:8080/wishlist/wishlistPage">Wishlist</a></li>
+                    <li><a href="#">Booked</a></li>
+                    <li><a href="http://localhost:8080/api/v1/user/logout">Log out</a></li>
+                    <li id="PID"><a th:text="${userId}"></a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
     <div class="wishlist-container">
         <header class="wishlist-header">
-            <h1>Danh Sách Wishlist</h1>
-            <p>Những phòng bạn yêu thích, sẵn sàng để đặt phòng!</p>
+            <h1 th:text:th:text="${userEmail}">Your Wishlist</h1>
         </header>
 
         <section class="wishlist-items">
-            <div class="wishlist-item">
-                <img src="room1.jpg" alt="Phòng Deluxe" class="wishlist-item-image">
-                <div class="wishlist-item-info">
-                    <h2 class="wishlist-item-name">Phòng Deluxe</h2>
-                    <p class="wishlist-item-price">Giá: 1,500,000 VNĐ</p>
-                    <p class="wishlist-item-description">Phòng Deluxe sang trọng với đầy đủ tiện nghi, view đẹp, phù hợp
-                        cho các cặp đôi.</p>
-                    <div class="wishlist-item-actions">
-                        <button class="btn-remove">Xóa khỏi Wishlist</button>
-                        <button class="btn-book">Đặt phòng</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="wishlist-item">
-                <img src="room2.jpg" alt="Phòng Standard" class="wishlist-item-image">
-                <div class="wishlist-item-info">
-                    <h2 class="wishlist-item-name">Phòng Standard</h2>
-                    <p class="wishlist-item-price">Giá: 1,000,000 VNĐ</p>
-                    <p class="wishlist-item-description">Phòng Standard tiện nghi với không gian thoải mái, giá cả hợp
-                        lý cho chuyến đi của bạn.</p>
-                    <div class="wishlist-item-actions">
-                        <button class="btn-remove">Xóa khỏi Wishlist</button>
-                        <button class="btn-book">Đặt phòng</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="wishlist-item">
-                <img src="room2.jpg" alt="Phòng Standard" class="wishlist-item-image">
-                <div class="wishlist-item-info">
-                    <h2 class="wishlist-item-name">Phòng Standard</h2>
-                    <p class="wishlist-item-price">Giá: 1,000,000 VNĐ</p>
-                    <p class="wishlist-item-description">Phòng Standard tiện nghi với không gian thoải mái, giá cả hợp
-                        lý cho chuyến đi của bạn.</p>
-                    <div class="wishlist-item-actions">
-                        <button class="btn-remove">Xóa khỏi Wishlist</button>
-                        <button class="btn-book">Đặt phòng</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="wishlist-item">
-                <img src="room2.jpg" alt="Phòng Standard" class="wishlist-item-image">
-                <div class="wishlist-item-info">
-                    <h2 class="wishlist-item-name">Phòng Standard</h2>
-                    <p class="wishlist-item-price">Giá: 1,000,000 VNĐ</p>
-                    <p class="wishlist-item-description">Phòng Standard tiện nghi với không gian thoải mái, giá cả hợp
-                        lý cho chuyến đi của bạn.</p>
-                    <div class="wishlist-item-actions">
-                        <button class="btn-remove">Xóa khỏi Wishlist</button>
-                        <button class="btn-book">Đặt phòng</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="wishlist-item">
-                <img src="room2.jpg" alt="Phòng Standard" class="wishlist-item-image">
-                <div class="wishlist-item-info">
-                    <h2 class="wishlist-item-name">Standard Room</h2>
-                    <p class="wishlist-item-price">Price: 499$/night</p>
-                    <p class="wishlist-item-description">Phòng Standard tiện nghi với không gian thoải mái, giá cả hợp
-                        lý cho chuyến đi của bạn.</p>
-                    <div class="wishlist-item-actions">
-                        <button class="btn-remove">Remove Wishlist</button>
-                        <button class="btn-book">Booking now!</button>
-                    </div>
-                </div>
-            </div>
 
         </section>
     </div>
 
     <script>
-        // Xử lý sự kiện xóa phòng khỏi Wishlist
-            document.querySelectorAll('.btn-remove').forEach(button => {
-                button.addEventListener('click', function () {
-                    const item = button.closest('.wishlist-item');
-                    item.remove(); // Xóa phòng khỏi wishlist
-                    alert('Phòng đã bị xóa khỏi Wishlist!');
-                });
-            });
+        const userEmail = document.getElementById("UEmail").textContent.trim();
+        const apiUrl = `http://localhost:8080/wishlist/api/personEmail?personEmail=${userEmail}`;
+        console.log("UserEmail: ", userEmail)
 
-            // Xử lý sự kiện đặt phòng
-            document.querySelectorAll('.btn-book').forEach(button => {
-                button.addEventListener('click', function () {
-                    alert('Bạn đã chọn đặt phòng này!');
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const wishlistContainer = document.querySelector(".wishlist-items");
+                    wishlistContainer.innerHTML = "";
+
+                    data.forEach(item => {
+                        const wishlistItem = document.createElement("div");
+                        wishlistItem.className = "wishlist-item";
+
+                        wishlistItem.innerHTML = `
+                        <img src="/images/${item.rimage}" alt="${item.rname}" class="wishlist-item-image">
+                        <div class="wishlist-item-info">
+                            <h2 class="wishlist-item-name">${item.rname}</h2>
+                            <p class="wishlist-item-price">Khách sạn: ${item.hname}</p>
+                            <div class="wishlist-item-actions">
+                                <button class="btn-remove" onclick="removeFromWishlist(${item.pid}, ${item.ctgid})">Remove</button>
+                                <button class="btn-book" onclick="watchRoom(${item.hid})">Watch room!</button>
+                            </div>
+                        </div>
+                    `;
+                        wishlistContainer.appendChild(wishlistItem);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching wishlist data:", error);
                 });
-            });
+        });
+
+        function removeFromWishlist(personID, roomID) {
+            alert(`Delete room ID: ${roomID} out of wishlist.`);
+            const url = `http://localhost:8080/wishlist/deleteFromWishList?pid=${personID}&ctgid=${roomID}`;
+
+            fetch(url, {
+                method: "POST",
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error("Failed to delete room from wishlist.");
+                    }
+                })
+                .then(message => {
+                    alert(message);
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("An error occurred while removing the room from wishlist.");
+                });
+        }
+
+        function watchRoom(hotelId) {
+            window.location.href = `http://localhost:8080/hotels/hotel_detail?id=${hotelId}`;
+        }
 
     </script>
 </body>
@@ -113,7 +112,6 @@
 
 
 <style>
-b/* Reset và cấu trúc cơ bản */
 * {
   margin: 0;
   padding: 0;
@@ -125,7 +123,94 @@ body {
   background-color: #f5f5f5;
   color: #333;
 }
+#PID{
+    display: none;
+}
+nav {
+    max-width: var(--max-width);
+    margin: auto;
+    padding: 2rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
+.nav__logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.nav__links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav__links .link {
+    position: relative;
+}
+
+.nav__links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.dropdown_menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    list-style: none;
+    padding: 10px 0;
+    min-width: 170px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: all 0.3s ease;
+}
+
+.dropdown_menu li {
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown_menu li a {
+    color: #333;
+    font-size: 14px;
+    display: block;
+}
+
+.dropdown_menu li:hover {
+    background-color: #f8f9fa;
+}
+
+.dropdown_menu li a:hover {
+    color: #007bff;
+}
+
+.link:hover .dropdown_menu {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.link a {
+    font-weight: 500;
+    color: var(--text-light);
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.link a:hover {
+    color: var(--primary-color);
+}
 .wishlist-container {
   max-width: 1200px;
   margin: 50px auto;

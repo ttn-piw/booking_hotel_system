@@ -4,6 +4,7 @@ package com.example.bookinghotel.controllers;
 import com.example.bookinghotel.models.wishlist;
 import com.example.bookinghotel.models.wishlistDTO;
 import com.example.bookinghotel.services.WishlistsService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,9 @@ public class WishlistsController {
     }
 
     @GetMapping("/wishlistPage")
-    public String showWishlistsPage(Model model) {
+    public String showWishlistsPage(HttpSession session, Model model) {
+        String userEmail = (String) session.getAttribute("userEmail");
+        model.addAttribute("userEmail", userEmail);
         return "Website/wishlist.html";
     }
     
