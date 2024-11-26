@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,5 +66,23 @@ public class ReviewsService {
                         "JOIN rv.person p " +
                         "WHERE rv.room.hotels.HID = :HID";
         return entityManager.createQuery(query).setParameter("HID", HID).getResultList();
+    }
+
+    @Transactional
+    public Boolean postReview(Integer pid, Integer ctgid, Double rating, String text) {
+        String booked = "INSERT INTO reviews (ctgid, pid, rating, rating_text) " +
+                "VALUES (:ctgid, :pid, :rating, :text)";
+        try {
+            entityManager.createNativeQuery(booked)
+                    .setParameter("pid", pid)
+                    .setParameter("ctgid", ctgid)
+                    .setParameter("rating", rating)
+                    .setParameter("text", text)
+                    .executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 }

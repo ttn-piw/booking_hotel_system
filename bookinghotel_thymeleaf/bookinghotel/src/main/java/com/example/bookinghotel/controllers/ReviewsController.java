@@ -3,12 +3,12 @@ package com.example.bookinghotel.controllers;
 import com.example.bookinghotel.models.review;
 import com.example.bookinghotel.services.ReviewsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,5 +42,18 @@ public class ReviewsController {
     @ResponseBody
     public List<review> getBestReviews() {
         return reviewsService.getBestReviewsService();
+    }
+
+    @PostMapping("/postReview")
+    public ResponseEntity<String> postReview(@RequestParam("pid") Integer pid,
+                                             @RequestParam("ctgid") Integer ctgid,
+                                             @RequestParam("rating") Double rating,
+                                             @RequestParam("rating_text") String rating_text) {
+        Boolean reviewed = reviewsService.postReview(pid, ctgid, rating, rating_text);
+        if (reviewed) {
+            return ResponseEntity.ok("Post a new review!");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

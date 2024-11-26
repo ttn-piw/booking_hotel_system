@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Booked Rooms</title>
+</head>
+<body>
+<nav>
+    <div class="nav__logo">TNEcoHotel</div>
+    <ul class="nav__links">
+        <li class="link"><a href="http://localhost:8080/hotels/home">Home</a></li>
+        <li class="link"><a href="#">Hotel</a></li>
+        <li class="link"><a href="#">About Us</a></li>
+        <li class="link">
+            <a id="UEmail" th:text="${userEmail != null ? userEmail : 'Account'}"></a>
+            <ul class="dropdown_menu">
+                <li><a href="#">Information</a></li>
+                <li><a href="http://localhost:8080/wishlist/wishlistPage">Wishlist</a></li>
+                <li><a href="http://localhost:8080/bookings/bookedRoom">Booked</a></li>
+                <li><a href="http://localhost:8080/api/v1/user/logout">Log out</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<section class="section__container popular__container">
+    <h2 class="section__header">Your Booked Rooms</h2>
+    <div class="popular__grid" id="roomResultsGrid">
+        <!-- FETCH BOOKED ROOMS -->
+    </div>
+</section>
+
+<!-- Review Form-->
+<div id="reviewFormModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Post a Review</h2>
+        <form id="reviewForm">
+            <label for="rating">Rating:</label>
+            <input type="number" id="rating" name="rating" min="1" max="5" step="0.1" required>
+            <label for="ratingText">Review:</label>
+            <textarea id="ratingText" name="ratingText" rows="4" required></textarea>
+            <input type="hidden" id="pid" name="pid">
+            <input type="hidden" id="ctgid" name="ctgid">
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="section__container footer__container">
+        <div class="footer__col">
+            <h3>TNEcoHotel</h3>
+            <p>TNEcoHotel is a premier hotel booking platform designed for both apps and websites, offering a seamless and convenient way to search and book accommodations worldwide.</p>
+        </div>
+        <div class="footer__col">
+            <h4>Company</h4>
+            <p>About Us</p>
+            <p>Our Team</p>
+            <p>Blog</p>
+            <p>Book</p>
+            <p>Contact Us</p>
+        </div>
+        <div class="footer__col">
+            <h4>Legal</h4>
+            <p>FAQs</p>
+            <p>Terms & Conditions</p>
+            <p>Privacy Policy</p>
+        </div>
+        <div class="footer__col">
+            <h4>Resources</h4>
+            <p>Social Media</p>
+            <p>Help Center</p>
+            <p>Partnerships</p>
+        </div>
+    </div>
+    <div class="footer__bar">
+        Copyright © 2023 Web Design Mastery. All rights reserved.
+    </div>
+</footer>
+
+<script>
+    let PID = 0;
+
+    async function getUserId(userEmail) {
+        try {
+            const response = await fetch(`http://localhost:8080/persons/getPID/personEmail?personEmail=${userEmail}`);
+            const data = await response.json();
+            PID = data[0][0];
+        } catch (error) {
+            console.error('Error fetching userId:', error);
+            alert('There was an issue fetching your user details. Please try again.');
+            throw error;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const userEmail = document.getElementById('UEmail').textContent.trim();
+        console.log("Email: ", userEmail)
+        await getUserId(userEmail);
+
+        fetch(`http://localhost:8080/bookings/personId?personId=${PID}`)
+            .then(response => response.json())
+            .then(data => {
+                const roomResultsGrid = document.getElementById('roomResultsGrid');
+
+                data.forEach(room => {
+                    const card = document.createElement('div');
+                    card.classList.add('room-card');
+
+                    const hotelName = room[2];
+                    const image = room[3];
+                    const roomType = room[4];
+                    const price = room[5];
+                    const checkInDate = room[6] ? room[6] : 'N/A';
+                    const checkOutDate = room[7] ? room[7] : 'N/A';
+
+                    card.innerHTML = `
+                    <img src="/images/${image}" alt="${hotelName} Room">
+                    <h3>${hotelName}</h3>
+                    <p>${roomType} Room</p>
+                    <p class="room-price">$${price}</p>
+                    <p class="dates">Check-in: ${checkInDate}</p>
+                    <p class="dates">Check-out: ${checkOutDate}</p>
+                    <button class="post-review-btn" data-pid="${room[0]}" data-ctgid="${room[1]}">Post a Review</button>
+                `;
+
+                    roomResultsGrid.appendChild(card);
+                });
+
+                document.querySelectorAll('.post-review-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const pid = this.getAttribute('data-pid');
+                        const ctgid = this.getAttribute('data-ctgid');
+                        document.getElementById('pid').value = pid;
+                        document.getElementById('ctgid').value = ctgid;
+                        document.getElementById('reviewFormModal').style.display = 'block';
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching the data:', error);
+            });
+
+        // Handle submit form
+        document.getElementById('reviewForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const pid = document.getElementById('pid').value;
+            const ctgid = document.getElementById('ctgid').value;
+            const rating = document.getElementById('rating').value;
+            const ratingText = document.getElementById('ratingText').value;
+
+            fetch('http://localhost:8080/api/reviews/postReview', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    pid: pid,
+                    ctgid: ctgid,
+                    rating: rating,
+                    rating_text: ratingText
+                })
+            })
+                .then(response => response.text())
+                .then(responseText => {
+                    alert(responseText);
+                    document.getElementById('reviewFormModal').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error posting the review:', error);
+                });
+        });
+
+        document.querySelector('.close-btn').addEventListener('click', function() {
+            document.getElementById('reviewFormModal').style.display = 'none';
+        });
+    });
+
+</script>
+</body>
+</html>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+    :root {
+        --primary-color: #2c3855;
+        --primary-color-dark: #435681;
+        --text-dark: #333333;
+        --text-light: #767268;
+        --extra-light: #f3f4f6;
+        --white: #ffffff;
+        --max-width: 1200px;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .section__container {
+        max-width: var(--max-width);
+        margin: auto;
+        padding: 5rem 1rem;
+    }
+
+    .section__header {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        text-align: center;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    img {
+        width: 100%;
+        display: flex;
+    }
+
+    body {
+        font-family: "Poppins", sans-serif;
+    }
+
+    nav {
+        max-width: var(--max-width);
+        margin: auto;
+        padding: 2rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .nav__logo {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .nav__links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+    }
+
+    .nav__links .link {
+        position: relative;
+    }
+
+    .nav__links a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        font-size: 16px;
+        transition: color 0.3s ease;
+    }
+
+    .dropdown_menu {
+        display: none;
+        position: absolute;
+        left: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        list-style: none;
+        padding: 10px 0;
+        min-width: 170px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .dropdown_menu li {
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown_menu li a {
+        color: #333;
+        font-size: 14px;
+        display: block;
+    }
+
+    .dropdown_menu li:hover {
+        background-color: #f8f9fa;
+    }
+
+    .dropdown_menu li a:hover {
+        color: #007bff;
+    }
+
+    .link:hover .dropdown_menu {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .link a {
+        font-weight: 500;
+        color: var(--text-light);
+        transition: 0.3s;
+    }
+
+    .link a:hover {
+        color: var(--primary-color);
+    }
+    .header__container {
+        padding: 1rem 1rem 5rem 1rem;
+    }
+
+    .header__image__container {
+        position: relative;
+        min-height: 500px;
+        background-image: linear-gradient(to right,
+        rgba(44, 56, 85, 0.9),
+        rgba(100, 125, 187, 0.1)),
+        url("/images/assets/header2.jpg");
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 2rem;
+    }
+
+    .header__content {
+        max-width: 600px;
+        padding: 5rem 2rem;
+    }
+
+    .header__content h1 {
+        margin-bottom: 1rem;
+        font-size: 3.5rem;
+        line-height: 4rem;
+        font-weight: 600;
+        color: var(--white);
+    }
+
+    .header__content p {
+        color: var(--extra-light);
+    }
+
+    .section__container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .popular__container {
+        text-align: center;
+    }
+
+    .section__header {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .popular__grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .room-card {
+        background-color: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .room-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .room-card h3 {
+        font-size: 22px;
+        margin-top: 10px;
+    }
+
+    .room-card .room-price {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+
+    .room-card .dates {
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .post-review-btn {
+        margin-top: 10px;
+        padding: 10px 15px;
+        background-color: #5cb85c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .post-review-btn:hover {
+        background-color: #4cae4c;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+        padding-top: 60px;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 5% auto;
+        padding: 30px;
+        border: 1px solid #ccc;
+        width: 50%;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .close-btn {
+        color: #aaa;
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+        color: #333;
+    }
+
+    .modal-content h2 {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    form label {
+        font-size: 16px;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #555;
+    }
+
+    form input[type="number"],
+    form textarea {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        width: 100%;
+        transition: border-color 0.3s;
+    }
+
+    form input[type="number"]:focus,
+    form textarea:focus {
+        border-color: #5cb85c;
+        outline: none;
+    }
+
+    form textarea {
+        resize: vertical;
+        height: 120px;
+    }
+
+    form button {
+        padding: 12px 18px;
+        background-color: #5cb85c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        align-self: center;
+        width: 60%;
+        margin-top: 10px;
+    }
+
+    form button:hover {
+        background-color: #4cae4c;
+    }
+
+    .post-review-btn {
+        background-color: #5cb85c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .post-review-btn:hover {
+        background-color: #4cae4c;
+    }
+    .footer {
+        background-color: var(--extra-light);
+    }
+
+    .footer__container {
+        display: grid;
+        grid-template-columns: 2fr repeat(3, 1fr);
+        gap: 5rem;
+    }
+
+    .footer__col h3 {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .footer__col h4 {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .footer__col p {
+        margin-bottom: 1rem;
+        color: var(--text-light);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .footer__col p:hover {
+        color: var(--text-dark);
+    }
+
+    .footer__bar {
+        position: relative;
+        max-width: var(--max-width);
+        margin: auto;
+        padding: 1rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-light);
+        text-align: right;
+        overflow: hidden;
+    }
+
+    .footer__bar::before {
+        position: absolute;
+        content: "";
+        top: 50%;
+        right: 28rem;
+        transform: translateY(-50%);
+        width: 20rem;
+        height: 2px;
+        background-color: var(--text-light);
+    }
+</style>

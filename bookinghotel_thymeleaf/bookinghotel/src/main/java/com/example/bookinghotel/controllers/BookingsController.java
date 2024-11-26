@@ -2,6 +2,7 @@ package com.example.bookinghotel.controllers;
 
 import com.example.bookinghotel.models.booking;
 import com.example.bookinghotel.services.BookingsService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -26,10 +27,23 @@ public class BookingsController {
         return "bookings/bookingsList.html";
     }
 
+    @GetMapping("/bookedRoom")
+    public String showBookedPage(HttpSession session, Model model) {
+        String userEmail = (String) session.getAttribute("userEmail");
+        model.addAttribute("userEmail", userEmail);
+        return "Website/booked_hotel.html";
+    }
+
     @GetMapping("/api/personId")
     @ResponseBody
     public List<booking> getBookingsByPersonId(@RequestParam("personId") int personId) {
         return bookingsService.getBookingsByPID(personId);
+    }
+
+    @GetMapping("/personId")
+    @ResponseBody
+    public List<booking> getBookingsByPersonIdWeb(@RequestParam("personId") int personId) {
+        return bookingsService.getBookingsByPIDWeb(personId);
     }
 
 
@@ -60,5 +74,4 @@ public class BookingsController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

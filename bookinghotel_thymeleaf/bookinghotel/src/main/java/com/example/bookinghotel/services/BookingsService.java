@@ -43,6 +43,12 @@ public class BookingsService {
     }
 
     @Transactional
+    public List<booking> getBookingsByPIDWeb(Integer id){
+        String getBookingsByPID = "SELECT b.person.PID,b.room.CTGID,b.hotel.HName,b.room.CTGImg, b.room.CTGName, b.BMoney, b.BCheckIn,b.BCheckOut FROM booking b WHERE b.person.PID = "+id;
+        return entityManager.createQuery(getBookingsByPID).getResultList();
+    }
+
+    @Transactional
     public Boolean bookedRoom(Integer pid, Integer ctgid, Integer hid, String money, LocalDate checkInDate, LocalDate checkOutDate) {
         String booked = "INSERT INTO booking (pid, hid, ctgid, bdate, bmoney, bpay, bcheck_in, bcheck_out) " +
                 "VALUES (:pid, :hid, :ctgid, :bdate, :money, 0, :bcheck_in, :bcheck_out)";
