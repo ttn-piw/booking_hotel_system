@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <title>Hotel Search Results</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav__logo">TNEcoHotel</div>
+        <ul class="nav__links">
+            <li class="link"><a href="http://localhost:8080/hotels/home">Home</a></li>
+            <li class="link"><a href="#">Hotel</a></li>
+            <li class="link"><a href="#">About Us</a></li>
+            <li class="link">
+                <a href="#">Account</a>
+                <ul class="dropdown_menu">
+                    <li><a href="#">Information</a></li>
+                    <li><a href="http://localhost:8080/wishlist/wishlistPage">Wishlist</a></li>
+                    <li><a href="#">Booked</a></li>
+                    <li><a href="http://localhost:8080/api/v1/user/logout">Log out</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <header class="section__container header__container">
+        <div class="header__image__container">
+            <div class="header__content">
+                <h1>Search Results</h1>
+                <p>Discover the best hotels in your selected location.</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="section__container popular__container">
+         <h2 class="section__header"></h2>
+        <div class="popular__grid" id="hotelResultsGrid">
+<!--             FETCH HOTELS -->
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="section__container footer__container">
+            <div class="footer__col">
+                <h3>TNEcoHotel</h3>
+                <p>
+                    TNEcoHotel is a premier hotel booking platform designed for both apps and websites, offering a seamless and convenient
+                    way to search and book accommodations worldwide.
+                <p>
+                    With an intuitive interface and an extensive selection of hotels, TNEcoHotel strives to provide a hassle-free experience
+                    for travelers in search of the ideal stay.
+                </p>
+            </div>
+            <div class="footer__col">
+                <h4>Company</h4>
+                <p>About Us</p>
+                <p>Our Team</p>
+                <p>Blog</p>
+                <p>Book</p>
+                <p>Contact Us</p>
+            </div>
+            <div class="footer__col">
+                <h4>Legal</h4>
+                <p>FAQs</p>
+                <p>Terms & Conditions</p>
+                <p>Privacy Policy</p>
+            </div>
+            <div class="footer__col">
+                <h4>Resources</h4>
+                <p>Social Media</p>
+                <p>Help Center</p>
+                <p>Partnerships</p>
+            </div>
+        </div>
+        <div class="footer__bar">
+            Copyright © 2023 Web Design Mastery. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const location = sessionStorage.getItem('sessionLocation');
+            if (!location) {
+                document.querySelector('.section__header').textContent = 'No location selected.';
+                return;
+            }
+
+            document.querySelector('.section__header').textContent = `Hotels in ${location}`;
+
+            fetch(`http://localhost:8080/hotels/search/location?location=${encodeURIComponent(location)}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Response: ", data);
+                    const grid = document.getElementById('hotelResultsGrid');
+                    grid.innerHTML = '';
+
+                    if (data.length === 0) {
+                        grid.innerHTML = '<p>No hotels found for the selected location.</p>';
+                        return;
+                    }
+                    data.forEach(hotel => {
+                        const card = document.createElement('div');
+                        card.classList.add('hotel__card');
+                        card.innerHTML = `
+                            <img src="/images/${hotel.himg}" alt="${hotel.hname}" class="hotel__image" />
+                            <div class="hotel__details">
+                                <h3>${hotel.hname}</h3>
+                                <p><i class="fas fa-star"></i> ${hotel.hstar} Stars</p>
+                                <p>Address: ${hotel.haddress}</p>
+                                <p>Contact: ${hotel.hphone}</p>
+                                <a href="/hotels/hotel_detail?id=${hotel.hid}" class="btn">View Details</a>
+                            </div>
+                        `;
+                        
+                        grid.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching hotel data:', error);
+                    const grid = document.getElementById('hotelResultsGrid');
+                    grid.innerHTML = '<p>Failed to load hotel data. Please try again later.</p>';
+                });
+        });
+    </script>
+
+</body>
+
+</html>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+    :root {
+        --primary-color: #2c3855;
+        --primary-color-dark: #435681;
+        --text-dark: #333333;
+        --text-light: #767268;
+        --extra-light: #f3f4f6;
+        --white: #ffffff;
+        --max-width: 1200px;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .section__container {
+        max-width: var(--max-width);
+        margin: auto;
+        padding: 5rem 1rem;
+    }
+
+    .section__header {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    img {
+        width: 100%;
+        display: flex;
+    }
+
+    body {
+        font-family: "Poppins", sans-serif;
+    }
+
+    nav {
+        max-width: var(--max-width);
+        margin: auto;
+        padding: 2rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .nav__logo {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .nav__links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+    }
+
+    .nav__links .link {
+        position: relative;
+    }
+
+    .nav__links a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        font-size: 16px;
+        transition: color 0.3s ease;
+    }
+
+    .dropdown_menu {
+        display: none;
+        position: absolute;
+        left: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        list-style: none;
+        padding: 10px 0;
+        min-width: 170px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .dropdown_menu li {
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown_menu li a {
+        color: #333;
+        font-size: 14px;
+        display: block;
+    }
+
+    .dropdown_menu li:hover {
+        background-color: #f8f9fa;
+    }
+
+    .dropdown_menu li a:hover {
+        color: #007bff;
+    }
+
+    .link:hover .dropdown_menu {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .link a {
+        font-weight: 500;
+        color: var(--text-light);
+        transition: 0.3s;
+    }
+
+    .link a:hover {
+        color: var(--primary-color);
+    }
+
+    .header__container {
+        padding: 1rem 1rem 5rem 1rem;
+    }
+
+    .header__image__container {
+        position: relative;
+        min-height: 500px;
+        background-image: linear-gradient(to right,
+        rgba(44, 56, 85, 0.9),
+        rgba(100, 125, 187, 0.1)),
+        url("/images/assets/header2.jpg");
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 2rem;
+    }
+
+    .header__content {
+        max-width: 600px;
+        padding: 5rem 2rem;
+    }
+
+    .header__content h1 {
+        margin-bottom: 1rem;
+        font-size: 3.5rem;
+        line-height: 4rem;
+        font-weight: 600;
+        color: var(--white);
+    }
+
+    .header__content p {
+        color: var(--extra-light);
+    }
+
+    /* Hotel Cards */
+    .popular__container {
+        margin: 30px 0;
+        padding: 0 10px;
+    }
+
+    .popular__grid {
+        margin: 0 100px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 70px;
+        justify-items: center;
+    }
+
+    .hotel__card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 100%;
+        max-width: 350px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .hotel__card:hover {
+        transform: translateY(-10px);
+    }
+
+    .hotel__image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .hotel__details {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .hotel__details h3 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .hotel__details p {
+        font-size: 1.1em;
+        color: #666;
+        margin: 5px 0;
+    }
+
+    .hotel__details a {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #1e2a47;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1.1em;
+        transition: background-color 0.3s;
+    }
+
+    .hotel__details a:hover {
+        background-color: #4e6f8c;
+    }
+
+    /* Footer */
+    .footer {
+        background-color: var(--extra-light);
+    }
+
+    .footer__container {
+        display: grid;
+        grid-template-columns: 2fr repeat(3, 1fr);
+        gap: 5rem;
+    }
+
+    .footer__col h3 {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .footer__col h4 {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .footer__col p {
+        margin-bottom: 1rem;
+        color: var(--text-light);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .footer__col p:hover {
+        color: var(--text-dark);
+    }
+
+    .footer__bar {
+        position: relative;
+        max-width: var(--max-width);
+        margin: auto;
+        padding: 1rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-light);
+        text-align: right;
+        overflow: hidden;
+    }
+
+    .footer__bar::before {
+        position: absolute;
+        content: "";
+        top: 50%;
+        right: 28rem;
+        transform: translateY(-50%);
+        width: 20rem;
+        height: 2px;
+        background-color: var(--text-light);
+    }
+
+    @media screen and (max-width: 768px) {
+        .nav__links {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .footer__container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer__col {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .hotel__card {
+            max-width: 100%;
+        }
+    }
+</style>

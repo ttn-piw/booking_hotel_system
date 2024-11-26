@@ -25,6 +25,7 @@ public class HotelsService {
         return hotels;
     }
 
+
     public void createNewHotel(hotelDTO hotelDTO, String image){
         hotel newHotel = new hotel();
         newHotel.setHName(hotelDTO.getHName());
@@ -60,6 +61,15 @@ public class HotelsService {
         String getBestListHotels = "SELECT h FROM hotel h ORDER BY h.HStar DESC";
         List<hotel> resultList = entityManager.createQuery(getBestListHotels, hotel.class)
                 .setMaxResults(5)
+                .getResultList();
+        return resultList;
+    }
+
+    @Transactional
+    public List<hotel> showSearchHotels(String location) {
+        String query = "SELECT h FROM hotel h WHERE LOWER(h.HAddress) LIKE :location";
+        List<hotel> resultList = entityManager.createQuery(query, hotel.class)
+                .setParameter("location", "%" + location.toLowerCase() + "%")
                 .getResultList();
         return resultList;
     }

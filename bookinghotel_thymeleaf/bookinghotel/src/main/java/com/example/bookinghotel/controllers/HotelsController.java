@@ -77,6 +77,17 @@ public class HotelsController {
         return "Website/hotel_detail.html";
     }
 
+    @GetMapping("/search")
+    public String showSearchHotel(Model model) {
+        return "Website/search_hotel.html";
+    }
+
+
+    @GetMapping("/search/location")
+    @ResponseBody
+    public List<hotel> searchHotel(@RequestParam("location") String location) {
+        return hotelsService.showSearchHotels(location);
+    }
 
     @GetMapping("/api/bestHotels")
     @ResponseBody

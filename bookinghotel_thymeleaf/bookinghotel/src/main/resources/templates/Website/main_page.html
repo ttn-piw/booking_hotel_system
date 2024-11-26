@@ -34,31 +34,27 @@
             <p>Book Hotels, Flights and stay packages at lowest price.</p>
         </div>
         <div class="booking__container">
-            <form>
+            <form id="searchForm">
                 <div class="form__group" id="txtLocation">
                     <div class="input__group">
-                        <input type="text" />
-                        <label>Location</label>
+                        <input type="text" id="locationInput" required />
                     </div>
                     <p>Where are you going?</p>
                 </div>
                 <div class="form__group">
                     <div class="input__group">
-                        <input type="text" />
-                        <label>Check In</label>
+                        <input type="date" id="checkInInput" />
                     </div>
                     <p>Add date</p>
                 </div>
                 <div class="form__group">
                     <div class="input__group">
-                        <input type="text" />
-                        <label>Check Out</label>
+                        <input type="date" id="checkOutInput" />
                     </div>
                     <p>Add date</p>
                 </div>
-            
             </form>
-            <button class="btn"><i class="ri-search-line"></i></button>
+            <button type="submit" class="btn"><i class="ri-search-line"></i> Search</button>
         </div>
     </div>
 </header>
@@ -157,6 +153,19 @@
 </footer>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNI_ZWPqvdS6r6gPVO50I4TlYkfkZdXh8"></script>
 <script>
+    //Search
+    document.querySelector('.btn').addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const location = document.getElementById('locationInput').value.trim();
+        if (!location) {
+            alert('Please enter a location.');
+            return;
+        }
+        sessionStorage.setItem('sessionLocation', location);
+        window.location.href = '/hotels/search';
+    });
+
     function initMap() {
         const location = { lat: 10.030009, lng: 105.7699716 };
         const map = new google.maps.Map(document.getElementById("map"), {
@@ -257,7 +266,6 @@
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
-
     :root {
         --primary-color: #2c3855;
         --primary-color-dark: #435681;
