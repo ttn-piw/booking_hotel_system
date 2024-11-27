@@ -60,6 +60,7 @@ public class RoomsService {
         newRoom.setCTGStar(roomDTO.getCTGStar());
         newRoom.setCTGPrice(roomDTO.getCTGPrice());
         newRoom.setCTGImg(imagePath);
+        newRoom.setCTGDescription(roomDTO.getCTGDescription());
         newRoom.setHotels(associatedHotel);
 
         roomRepository.save(newRoom);
@@ -81,6 +82,7 @@ public class RoomsService {
         existingRoom.setCTGRemain(updatedRoom.getCTGRemain());
         existingRoom.setCTGStar(updatedRoom.getCTGStar());
         existingRoom.setCTGPrice(updatedRoom.getCTGPrice());
+        existingRoom.setCTGDescription(updatedRoom.getCTGDescription());
 
         // Check if a new image is provided; if so, update it
         if (updatedRoom.getCTGImg() != null && !updatedRoom.getCTGImg().isEmpty()) {
@@ -92,11 +94,11 @@ public class RoomsService {
                 .orElseThrow(() -> new RuntimeException("Hotel not found with ID: " + hotelId));
         existingRoom.setHotels(associatedHotel);
 
+        System.out.println("Saving room: " + existingRoom);
         roomRepository.save(existingRoom);
     }
 
     public void deleteRoom(Integer roomID) {
         roomRepository.deleteById(roomID);
     }
-
 }

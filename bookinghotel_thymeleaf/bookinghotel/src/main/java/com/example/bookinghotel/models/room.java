@@ -100,7 +100,7 @@ public class room {
         this.CTGImg = CTGImg;
     }
 
-    public @NotEmpty(message = "Room description is required") String getCTGDescription() {
+    public String getCTGDescription() {
         return CTGDescription;
     }
 

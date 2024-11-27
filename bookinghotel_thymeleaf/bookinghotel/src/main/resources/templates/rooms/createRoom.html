@@ -64,6 +64,13 @@
                         <p class="text-danger" th:if="${#fields.hasErrors('HID')}" th:errors="*{HID}">Hotel is required</p>
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <label for="CTGDescriptionRow" class="col-sm-2 form-label">Room Description:</label>
+                    <div class="col-sm-8">
+                        <textarea id="CTGDescriptionRow" class="form-control" th:field="*{CTGDescription}" placeholder="Input room description"></textarea>
+                        <p class="text-danger" th:if="${#fields.hasErrors('CTGDescription')}" th:errors="*{CTGDescription}">Room description is required</p>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-2 d-grid">
                         <button type="submit" class="btn btn-success">Submit</button>

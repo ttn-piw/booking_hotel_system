@@ -70,6 +70,7 @@ public class RoomsController {
     @PostMapping("/create")
     public String createRoom(@Valid @ModelAttribute roomDTO roomDTO, BindingResult bindingResult, Model model) throws IOException {
         if (roomDTO.getCTGImg().isEmpty()) {
+
             bindingResult.addError(new FieldError("roomDTO", "roomDTO.CTGImg", "Room image is required"));
         }
         if (bindingResult.hasErrors()) {
@@ -118,6 +119,7 @@ public class RoomsController {
             roomDTO.setCTGQuantity(editRoom.getCTGQuantity());
             roomDTO.setCTGRemain(editRoom.getCTGRemain());
             roomDTO.setCTGImgPath(editRoom.getCTGImg());
+            roomDTO.setCTGDescription(editRoom.getCTGDescription());
 
             model.addAttribute("roomDTO", roomDTO);
             model.addAttribute("hotels", hotelsService.getAllHotels());
@@ -139,6 +141,7 @@ public class RoomsController {
         }
 
         if (bindingResult.hasErrors()) {
+            bindingResult.getFieldErrors().forEach(error -> System.out.println(error.getField() + ": " + error.getDefaultMessage()));
             return "rooms/editRoomById.html";
         }
 

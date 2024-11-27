@@ -20,45 +20,50 @@
                     <label for="HNameRow" class="col-sm-2 col-form-label">Hotel Name:</label>
                     <div class="col-sm-8">
                         <input type="text" id="HNameRow" class="form-control" th:field="*{HName}" placeholder="Input new hotel name">
-                        <p class="text-danger" th:if="${#fields.hasErrors('HName')}" th:errors="*{HName}">Hotel's name is required</p>
+                        <p class="text-danger" th:if="${#fields.hasErrors('HName')}" th:errors="*{HName}"></p>
                     </div>
                 </div>
+
                 <div class="row mb-3">
                     <label for="HAddressRow" class="col-sm-2 form-label">Hotel Address:</label>
                     <div class="col-sm-8">
                         <input type="text" id="HAddressRow" class="form-control" th:field="*{HAddress}" placeholder="Input new hotel address">
-                        <p class="text-danger" th:if="${#fields.hasErrors('HAddress')}" th:errors="*{HAddress}">Hotel's address is required</p>
+                        <p class="text-danger" th:if="${#fields.hasErrors('HAddress')}" th:errors="*{HAddress}"></p>
                     </div>
                 </div>
+
                 <div class="row mb-3">
                     <label for="HStarRow" class="col-sm-2 form-label">Hotel Star:</label>
                     <div class="col-sm-2">
                         <input type="text" id="HStarRow" class="form-control" th:field="*{HStar}" placeholder="Star">
-                        <p class="text-danger" th:if="${#fields.hasErrors('HStar')}" th:errors="*{HStar}">Hotel's star rating is required</p>
+                        <p class="text-danger" th:if="${#fields.hasErrors('HStar')}" th:errors="*{HStar}"></p>
                     </div>
                 </div>
+
                 <div class="row mb-3">
                     <label for="HPhoneRow" class="col-sm-2 form-label">Hotel Phone:</label>
                     <div class="col-sm-4">
                         <input type="text" id="HPhoneRow" class="form-control" th:field="*{HPhone}" placeholder="Phone">
-                        <p class="text-danger" th:if="${#fields.hasErrors('HPhone')}" th:errors="*{HPhone}">Hotel's phone number is required</p>
+                        <p class="text-danger" th:if="${#fields.hasErrors('HPhone')}" th:errors="*{HPhone}"></p>
                     </div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="offset-sm-2 col-sm-4">
-                        <img th:if="${hotelDTO.HImgPath != null}" th:src="@{'/images/' + ${hotelDTO.HImgPath}}" alt="Hotel Image" width="150">
+                    <label for="HDescriptionRow" class="col-sm-2 form-label">Hotel Description:</label>
+                    <div class="col-sm-8">
+                        <textarea id="HDescriptionRow" class="form-control" th:field="*{HDescription}" placeholder="Input hotel description"></textarea>
+                        <p class="text-danger" th:if="${#fields.hasErrors('HDescription')}" th:errors="*{HDescription}"></p>
                     </div>
                 </div>
-
 
                 <div class="row mb-3">
                     <label for="HImgRow" class="col-sm-2 form-label">Upload new image</label>
                     <div class="col-sm-8">
                         <input class="form-control" type="file" id="HImgRow" th:field="*{HImg}">
-                        <p class="text-danger" th:if="${#fields.hasErrors('HImg')}" th:errors="*{HImg}">Hotel's image is required</p>
+                        <p class="text-danger" th:if="${#fields.hasErrors('HImg')}" th:errors="*{HImg}"></p>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="offset-sm-2 col-sm-2 d-grid">
                         <button type="submit" class="btn btn-success">Submit</button>
@@ -67,7 +72,6 @@
                         <a class="btn btn-outline-danger" href="/hotels" role="button">Cancel</a>
                     </div>
                 </div>
-
             </form>
 
         </div>

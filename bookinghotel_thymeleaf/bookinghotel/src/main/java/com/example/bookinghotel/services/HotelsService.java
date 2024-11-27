@@ -33,6 +33,7 @@ public class HotelsService {
         newHotel.setHPhone(hotelDTO.getHPhone());
         newHotel.setHStar(hotelDTO.getHStar());
         newHotel.setHImg(image);
+        newHotel.setHDescription(hotelDTO.getHDescription());
         hotelRepository.save(newHotel);
     }
     public hotel getHotelByHID(Integer hotelID) {
@@ -45,6 +46,7 @@ public class HotelsService {
         hotel.setHAddress(hotel.getHAddress());
         hotel.setHName(hotel.getHName());
         hotel.setHImg(hotel.getHImg());
+        hotel.setHDescription(hotel.getHDescription());
         hotelRepository.save(hotel);
     }
 

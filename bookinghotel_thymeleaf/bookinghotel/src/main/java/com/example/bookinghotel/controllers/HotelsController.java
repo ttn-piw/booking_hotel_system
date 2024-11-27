@@ -105,9 +105,11 @@ public class HotelsController {
     @PostMapping("/create")
     public String createHotel(@Valid @ModelAttribute hotelDTO hotelDTO, BindingResult bindingResult) throws IOException {
         if (hotelDTO.getHImg().isEmpty()) {
+            System.out.println("Image file is missing or empty.");
             bindingResult.addError(new FieldError("hotelDTO", "hotelDTO.HImg", "hotelDTO.HImg is required"));
         }
         if(bindingResult.hasErrors()){
+            System.out.println("BindingResult errors: " + bindingResult.getAllErrors());
             return "hotels/createHotel.html";
         }
 
@@ -149,7 +151,7 @@ public class HotelsController {
             hotelDTO.setHPhone(editHotel.getHPhone());
             hotelDTO.setHStar(editHotel.getHStar());
             hotelDTO.setHImgPath(editHotel.getHImg());
-
+            hotelDTO.setHDescription(editHotel.getHDescription());
             model.addAttribute("hotelDTO", hotelDTO);
 
         } catch (Exception e) {
@@ -163,45 +165,47 @@ public class HotelsController {
     public String updateHotel(@RequestParam int id, @Valid @ModelAttribute hotelDTO hotelDTO, BindingResult bindingResult) throws IOException {
         hotel editedHotel = hotelsService.getHotelByHID(id);
 
-        if (hotelDTO.getHImg().isEmpty()) {
-            bindingResult.addError(new FieldError("hotelDTO", "hotelDTO.HImg", "hotelDTO.HImg is required"));
+        if (hotelDTO.getHImg() != null && !hotelDTO.getHImg().isEmpty()) {
+            String uploadDir = "D:/NLCN/bookinghotel_thymeleaf/bookinghotel/src/main/resources/static/images";
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            try {
+                MultipartFile image = hotelDTO.getHImg();
+                String newFileName = image.getOriginalFilename();
+
+                if (editedHotel.getHImg() != null && !editedHotel.getHImg().isEmpty()) {
+                    Path oldImgPath = uploadPath.resolve(editedHotel.getHImg());
+                    Files.deleteIfExists(oldImgPath);
+                }
+
+                Path newImagePath = uploadPath.resolve(newFileName);
+                Files.copy(image.getInputStream(), newImagePath, StandardCopyOption.REPLACE_EXISTING);
+                editedHotel.setHImg(newFileName);
+
+            } catch (IOException e) {
+                bindingResult.addError(new FieldError("hotelDTO", "HImg", "Error uploading image."));
+            }
         }
 
         if (bindingResult.hasErrors()) {
             return "hotels/editHotelById.html";
         }
 
-        String uploadDir = "D:/NLCN/bookinghotel_thymeleaf/bookinghotel/src/main/resources/static/images";
-        Path uploadPath = Paths.get(uploadDir);
+        editedHotel.setHName(hotelDTO.getHName());
+        editedHotel.setHAddress(hotelDTO.getHAddress());
+        editedHotel.setHStar(hotelDTO.getHStar());
+        editedHotel.setHPhone(hotelDTO.getHPhone());
+        editedHotel.setHDescription(hotelDTO.getHDescription());
 
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-
-        if (!hotelDTO.getHImg().isEmpty()) {
-            if (editedHotel.getHImg() != null && !editedHotel.getHImg().isEmpty()) {
-                Path oldImgPath = uploadPath.resolve(editedHotel.getHImg().substring(editedHotel.getHImg().lastIndexOf('/') + 1));
-                try {
-                    Files.deleteIfExists(oldImgPath);
-                } catch (IOException e) {
-                    System.out.println("Error deleting old image: " + e.getMessage());
-                }
-            }
-
-            MultipartFile image = hotelDTO.getHImg();
-            String newFileName = image.getOriginalFilename();
-            try (InputStream inputStream = image.getInputStream()) {
-                Path filePath = uploadPath.resolve(newFileName);
-                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-                editedHotel.setHImg(newFileName);
-            } catch (IOException e) {
-                System.out.println("Error uploading new image: " + e.getMessage());
-            }
-        }
         hotelsService.updateHotel(editedHotel);
 
         return "redirect:/hotels";
     }
+
 
     @GetMapping("/delete")
     public String deleteHotelById(@RequestParam int id){
