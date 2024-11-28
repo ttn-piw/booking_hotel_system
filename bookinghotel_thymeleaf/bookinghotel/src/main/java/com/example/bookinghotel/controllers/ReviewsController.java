@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -24,6 +25,18 @@ public class ReviewsController {
     @ResponseBody
     public List<review> getReviews() {
         return reviewsService.getReviewsService();
+    }
+
+    @GetMapping("/")
+    public String showReviewsAdmin(Model model) {
+        model.addAttribute("reviews", reviewsService.getReviewsService());
+        return "reviews/manageReviews.html";
+    }
+
+    @GetMapping("/delete")
+    public String deleteReviewByID(@RequestParam int id){
+        reviewsService.deleteReview(id);
+        return "redirect:/api/reviews/";
     }
 
     @GetMapping("/roomId")

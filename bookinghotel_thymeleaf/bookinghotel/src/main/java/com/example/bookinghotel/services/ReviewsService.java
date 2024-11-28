@@ -85,4 +85,10 @@ public class ReviewsService {
             throw e;
         }
     }
+
+    @Transactional
+    public void deleteReview(Integer rid) {
+        String query = "DELETE FROM reviews WHERE review_id = :rid";
+        entityManager.createNativeQuery(query).setParameter("rid", rid).executeUpdate();
+    }
 }
