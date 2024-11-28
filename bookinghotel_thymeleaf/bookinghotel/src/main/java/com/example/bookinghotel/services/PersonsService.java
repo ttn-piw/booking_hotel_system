@@ -22,6 +22,14 @@ public class PersonsService {
         return personRepository.findAll();
     }
 
+    public void updateUser(Integer id, String name, Boolean sex, String address) throws Exception {
+        person update_person = personRepository.findById(id).get();
+        update_person.setPName(name);
+        update_person.setPSex(sex);
+        update_person.setPAddress(address);
+        personRepository.save(update_person);
+    }
+
     @PersistenceContext
     private EntityManager entityManager;
 
