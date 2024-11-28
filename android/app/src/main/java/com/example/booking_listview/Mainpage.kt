@@ -65,9 +65,21 @@ class Mainpage : AppCompatActivity() {
 
         fetchBestRooms()
 
+        val btnWishList = findViewById<ImageView>(R.id.btnWishlist)
+        btnWishList.setOnClickListener {
+            val intent = Intent(this,WishList::class.java)
+            startActivity(intent);
+        }
+
         val btnBooked = findViewById<ImageView>(R.id.btnBookedRooms)
         btnBooked.setOnClickListener{
             val intent = Intent(this,Booked_page::class.java)
+            startActivity(intent);
+        }
+
+        val btnLogout = findViewById<ImageView>(R.id.btnLogoutMain)
+        btnLogout.setOnClickListener {
+            val intent = Intent(this,Login::class.java)
             startActivity(intent);
         }
     }

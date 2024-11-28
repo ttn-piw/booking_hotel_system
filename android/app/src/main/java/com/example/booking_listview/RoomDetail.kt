@@ -116,11 +116,30 @@ class RoomDetail : AppCompatActivity() {
 
 
 ////////////////////////////////////////////////////////////////////////////
+        val btnHome  = findViewById<ImageView>(R.id.btnHomeRD)
+        btnHome.setOnClickListener {
+            val intent = Intent(this, Mainpage::class.java)
+            startActivity(intent)
+        }
+
         val btnAddToWishList = findViewById<ImageView>(R.id.btnAddToWishList)
         btnAddToWishList.setOnClickListener{
             val intent = Intent(this, WishList::class.java)
             startActivity(intent)
         }
+
+        val btnBooked  = findViewById<ImageView>(R.id.btnBookedRoomsRD)
+        btnBooked.setOnClickListener {
+            val intent = Intent(this, Booked_page::class.java)
+            startActivity(intent)
+        }
+
+        val btnLogout  = findViewById<ImageView>(R.id.btnLogoutRD)
+        btnLogout.setOnClickListener {
+            val intent = Intent(this, Login::class.java)
+            startActivity(intent)
+        }
+
 
         val btnBooking = findViewById<Button>(R.id.btnBookingRD)
         btnBooking.setOnClickListener {

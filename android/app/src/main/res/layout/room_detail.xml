@@ -259,7 +259,7 @@
 
 
         <ImageView
-            android:id="@+id/btnHomeBottom"
+            android:id="@+id/btnHomeRD"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
@@ -267,7 +267,7 @@
             app:srcCompat="@drawable/icons8_home" />
 
         <ImageView
-            android:id="@+id/btnWishlist"
+            android:id="@+id/btnWishlistRD"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="50dp"
@@ -275,7 +275,7 @@
             app:srcCompat="@drawable/heart_svgrepo_com" />
 
         <ImageView
-            android:id="@+id/btnBookedRooms"
+            android:id="@+id/btnBookedRoomsRD"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="50dp"
@@ -283,11 +283,11 @@
             app:srcCompat="@drawable/bed" />
 
         <ImageView
-            android:id="@+id/btnAccountBottom"
+            android:id="@+id/btnLogoutRD"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="10dp"
-            app:srcCompat="@drawable/account_logo" />
+            app:srcCompat="@drawable/logout" />
     </LinearLayout>
 </RelativeLayout>

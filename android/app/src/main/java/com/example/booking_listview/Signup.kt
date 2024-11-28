@@ -36,7 +36,7 @@ class Signup : AppCompatActivity() {
         // Handle signup button click
         btnSignupconfirm.setOnClickListener {
             if (validField()) {
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, Mainpage::class.java)
                 val queue = Volley.newRequestQueue(this)
 
                 val url: String = "http://10.0.2.2:8080/api/v1/users/register"
